@@ -6,6 +6,7 @@
 	import Scrubber from "$lib/components/Scrubber.svelte";
 	import Checkbox from "$lib/components/Checkbox.svelte";
   import { onDestroy, onMount } from "svelte";
+	import { base } from "$service-worker";
 
   import VgdConverterService from "$lib/engine/services/VgdConverterService";
 	import RuntimeService from "$lib/engine/services/RuntimeService";
@@ -239,7 +240,7 @@
   <section class="flex w-full gap-4">
     <button
       onclick={() => isPlaying = !isPlaying}
-      style="background-image: url(/icons/{isPlaying ? "pause.png" : "play.png"});"
+      style="background-image: url({base}/icons/{isPlaying ? "pause.png" : "play.png"});"
 
       aria-label="Play / Pause"
       class="
