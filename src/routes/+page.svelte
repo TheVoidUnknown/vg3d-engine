@@ -6,7 +6,7 @@
 	import Scrubber from "$lib/components/Scrubber.svelte";
 	import Checkbox from "$lib/components/Checkbox.svelte";
   import { onDestroy, onMount } from "svelte";
-	import { base } from "$service-worker";
+	import { base } from "$app/paths";
 
   import VgdConverterService from "$lib/engine/services/VgdConverterService";
 	import RuntimeService from "$lib/engine/services/RuntimeService";
