@@ -34,6 +34,7 @@
   let activeObjs = $state({ opaque: 0, transparent: 0 });
   let activeTheme: ITheme | null = $state(null);
   let snapshots: PerformanceSnapshot[] = $state([]);
+  let latestSnapshot: PerformanceSnapshot | undefined = $state();
   let converterStats = $derived(VgdConverterService.stats);
 
   // Controls
@@ -107,6 +108,7 @@
 
     const index = Math.floor((time * 1000) / SNAPSHOT_INTERVAL);
     const snapshot = { ups, fps, cpuMs, renderMs, activeObjs };
+    latestSnapshot = snapshot;
 
     if (snapshots[index]) {
       snapshots[index] = snapshot;
@@ -141,7 +143,8 @@
       isPlaying = true;
     } catch (oops) {
       const stack = oops as unknown as { stack: string };
-      alert(`There was an error parsing this level! Please report this!\n\nError: ${oops}\n\nStack: ${stack ?? "N/A"}`)
+      console.error(oops);
+      alert(`There was an error parsing this level! Please report this!\n\nError: ${oops}`);
     }
   }
 
@@ -162,6 +165,7 @@
       {snapshots}
       interval={SNAPSHOT_INTERVAL}
       duration={ANIMATION_DURATION}
+      currentSnapshot={latestSnapshot}
     />
   </section>
 

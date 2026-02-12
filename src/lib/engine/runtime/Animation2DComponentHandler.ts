@@ -21,10 +21,10 @@ const handleAnimation2DComponent: RuntimeHandler = (
   // Interpolate
   AnimationService.interpolateTracks(
     time, 
-    component, 
+    component,
+    _scratchParams2D,
     component.parentId ? component.parentSettings : undefined, 
-    false, 
-    _scratchParams2D
+    true
   );
 
   // Check if the component has these tracks, implying the scratchParams has data.

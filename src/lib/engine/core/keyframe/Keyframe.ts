@@ -1,5 +1,5 @@
 import type { Easing } from "../easing/Easing.types";
-import type { IKeyframe, RandomizerType } from "./Keyframe.types";
+import type { IKeyframe } from "./Keyframe.types";
 
 const DEFAULT: IKeyframe = {
   time: 0,
@@ -7,22 +7,25 @@ const DEFAULT: IKeyframe = {
   data: []
 }
 
-// TODO: Remove this class entirely, its so much worse than just using flat arrays
 export default class Keyframe implements IKeyframe {
-  time!: number;
-  easing!: Easing;
-  data!: number[];
-  random?: number[];
-  themeId?: string;
-  randomize?: RandomizerType;
+  public time!: number;
+  public easing!: Easing;
+  public data!: number[];
+  public random?: number[];
+  public themeId?: string;
+  public randomize?: number;
+  public randomizeInterval?: number;
 
-  randomSeed!: number;
+  public randomSeed!: number;
 
   constructor(initial?: Partial<IKeyframe>) { 
-    Object.assign(this, structuredClone(DEFAULT));
-    this.refreshRandomSeed();
+    this.refreshSeed();
 
-    if (initial) { this.assign(initial); }
+    if (initial) {
+      this.assign(initial);
+    } else {
+      this.assign(structuredClone(DEFAULT));
+    }
   }
 
   public static from(
@@ -39,26 +42,26 @@ export default class Keyframe implements IKeyframe {
       random: this.random,
       themeId: this.themeId,
       randomize: this.randomize,
+      randomizeInterval: this.randomizeInterval
     };
   }
 
   public assign(
     data: Partial<IKeyframe>
   ): this { 
-    this.data = structuredClone(data.data) ?? this.data;
+    this.data = structuredClone(data.data) ?? this.data ?? [];
+
+    this.time = data.time ?? 0;
     this.easing = data.easing ?? "Linear";
     this.random = data.random;
-    this.randomize = data.randomize;
     this.themeId = data.themeId;
-    this.time = data.time ?? 0;
+    this.randomize = data.randomize;
+    this.randomizeInterval = data.randomizeInterval;
 
     return this;
   }
   
-  public refreshRandomSeed() {
-    this.randomSeed = Math.floor(Math.random() * 999999);
-  }
-
+  public refreshSeed() { this.randomSeed = Math.floor(Math.random() * 999999); }
   public setTime(t: number): this     { this.time = t;     return this; }
   public setEasing(ct: Easing): this  { this.easing = ct;  return this; }
   public setData(val: number[]): this { this.data = val;   return this; }

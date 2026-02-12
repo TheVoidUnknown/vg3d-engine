@@ -10,7 +10,7 @@ export interface IComponentStatic {
 }
 
 export interface IComponent<T, D extends IComponentStatic> {
-  isDirty?: boolean;
+  _isDirty?: boolean;
 
   type: () => string;
   init: (owner: Animatable) => void;

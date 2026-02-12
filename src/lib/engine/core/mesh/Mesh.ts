@@ -16,7 +16,7 @@ export default class Mesh implements IMesh {
   public readonly vertices: Vector3[];
   public readonly faces: number[][];
 
-  public isDirty: boolean;
+  public _isDirty: boolean;
   public _indices: Uint16Array;
   public _flatMesh: Float32Array;
   public _flatNormals: Float32Array;
@@ -29,7 +29,7 @@ export default class Mesh implements IMesh {
   constructor(
     initial?: IMesh,
   ) {
-    this.isDirty = true;
+    this._isDirty = true;
     this._indices = new Uint16Array();
     this._flatMesh = new Float32Array();
     this._flatNormals = new Float32Array();

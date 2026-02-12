@@ -21,20 +21,21 @@ export enum EventKeyframe {
 
 export type KeyframeType = keyof typeof ObjectKeyframe | keyof typeof EventKeyframe;
 
-export enum Randomizer {
-  None = "none",
-  Linear = "linear",
-  Toggle = "toggle",
-  Relative = "relative"
+export enum Randomize {
+  None = 0,
+  Linear = 1,
+  Toggle = 2,
+  Relative = 3
 }
 
-export type RandomizerType = keyof typeof Randomizer;
-
 export interface IKeyframe {
+  randomSeed?: number;
+
   time: number;
   easing?: Easing;
   data: number[];
   random?: number[];
   themeId?: string;
-  randomize?: RandomizerType;
+  randomize?: number;
+  randomizeInterval?: number;
 }

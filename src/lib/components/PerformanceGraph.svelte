@@ -6,13 +6,15 @@
 		interval: number; // ms between snapshots
 		duration: number; // total window size in seconds to display
 		snapshots: PerformanceSnapshot[];
+    currentSnapshot?: PerformanceSnapshot;
 	}
 
 	let { 
 		smooth = true, 
 		interval, 
 		duration, 
-		snapshots = []
+		snapshots = [],
+    currentSnapshot
 	}: Props = $props();
 
 	let width = $state(0);
@@ -101,27 +103,29 @@
 <div class="flex flex-col h-full w-full gap-3 p-4 bg-zinc-900/80  font-mono">
 	
 	<!-- Legend -->
-	<div class="flex flex-wrap gap-x-5 gap-y-2 shrink-0">
-		{#each chartData as metric (metric.key)}
-			<div class="flex items-center gap-2 text-xs">
-				<div 
-					class="w-2.5 h-2.5 rounded-full shadow-[0_0_8px]" 
-					style="background-color: {metric.color}; shadow-color: {metric.color}"
-				></div>
-				
-				<div class="flex flex-col leading-none">
-					<span class="text-zinc-400 font-medium uppercase tracking-wider text-[10px]">
-						{metric.label}
-					</span>
-					<span class="text-zinc-100 font-mono font-bold mt-0.5">
-						{metric.current.toFixed(1)} <span class="text-zinc-500 text-[10px]">{metric.unit ?? ''}</span>
-					</span>
-				</div>
-			</div>
-		{:else}
-			<div class="text-zinc-500 text-xs italic">Waiting for data...</div>
-		{/each}
-	</div>
+  <div class="flex flex-wrap gap-x-5 gap-y-2 shrink-0">
+    {#each METRICS as metric (metric.key)}
+      {@const value = currentSnapshot ? metric.getValue(currentSnapshot) : 0}
+      <div class="flex items-center gap-2 text-xs">
+        <div 
+          class="w-2.5 h-2.5 rounded-full shadow-[0_0_8px]" 
+          style="background-color: {metric.color}; box-shadow: 0 0 8px {metric.color}44"
+        ></div>
+        
+        <div class="flex flex-col leading-none">
+          <span class="text-zinc-400 font-medium uppercase tracking-wider text-[10px]">
+            {metric.label}
+          </span>
+          <span class="text-zinc-100 font-mono font-bold mt-0.5">
+            {value.toFixed(1)} 
+            <span class="text-zinc-500 text-[10px] lowercase">{metric.unit ?? ''}</span>
+          </span>
+        </div>
+      </div>
+    {:else}
+      <div class="text-zinc-500 text-xs italic">Waiting for data...</div>
+    {/each}
+  </div>
 
 	<!-- Chart Container -->
 	<div 

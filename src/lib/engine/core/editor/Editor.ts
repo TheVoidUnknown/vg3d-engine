@@ -160,7 +160,7 @@ export default class Editor {
 
   public update(time: number) {
     const eventsComp = this.level.events.getComponent("Animation3D");
-    this._events = AnimationService.interpolateTracks(time, eventsComp);
+    this._events = AnimationService.interpolateTracks(time, eventsComp, this._events ?? {});
 
     // Update camera events
     if (this.freecamEnabled) {

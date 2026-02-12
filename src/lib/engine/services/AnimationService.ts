@@ -1,7 +1,7 @@
 import type { ComponentType } from "../core/component/Component.types";
 import { getEasing } from "../core/easing/Easing.const";
 import type Keyframe from "../core/keyframe/Keyframe";
-import type { KeyframeType } from "../core/keyframe/Keyframe.types";
+import { Randomize, type KeyframeType } from "../core/keyframe/Keyframe.types";
 import type KeyframeTrack from "../core/keyframeTrack/KeyframeTrack";
 import type { ITheme } from "../core/level/Level.types";
 import ColorService, { type RawRgb } from "./ColorService";
@@ -42,22 +42,20 @@ export default class AnimationService {
   public static interpolateTracks(
     time: number,
     component: ComponentType,
+    out: IAnimationParameters,
     parentSettings?: IParentSettings,
-    isRootNode = false,
-    out: IAnimationParameters = {} // Optional mutation target to avoid allocation
+    isRootNode = true,
   ): IAnimationParameters {
-    // TODO: Ideally component.tracks should be arraylike, but whatever
-    // This loop has a lot of overhead, but it's not worth refactoring
-    // until `KeyframeTrack` is rewritten.
     for (const k in component.tracks) {
-      const key = k as KeyframeType;
+      const key = k as KeyframeType; // thanks typescript
       const track = component.tracks[key];
+
       if (!track) { continue; }
 
-      // Resolve parent settings
       let enabled = true;
       let offset = 0;
 
+      // Resolve parent settings
       if (parentSettings) {
         const setting = parentSettings[key];
         if (setting) {
@@ -67,7 +65,7 @@ export default class AnimationService {
       }
 
       // Interpolate Track
-      this.interpolateTrack(track, time - offset); 
+      this.interpolateTrack(track, time - offset); // Mutates _trackQueryResult with binary tree search results
       const { prev, next, t } = _trackQueryResult;
 
       let prevData = prev.data;
@@ -78,10 +76,11 @@ export default class AnimationService {
       if (next.randomize) { nextData = this.getRandom(next, _scratchRandomNext); }
 
       // Lerp result
-      if (enabled || !isRootNode) {
+      if (enabled || isRootNode) {
         let targetArr = out[key];
+
         if (!targetArr) {
-          targetArr = [];
+          targetArr = new Array(prevData.length).fill(0);
           out[key] = targetArr;
         }
 
@@ -103,13 +102,14 @@ export default class AnimationService {
     const themeA = themes.get(prev.themeId ?? "");
     const themeB = themes.get(next.themeId ?? "");
 
-    if (!themeA && !themeB) throw new Error("Missing themes for interpolation");
+    if (!themeA && !themeB) { throw new Error("Missing themes for interpolation"); }
     if (!themeA) { return themeB!; }
     if (!themeB) { return themeA; }
 
     const rawA = this.getCachedTheme(themeA);
     const rawB = this.getCachedTheme(themeB);
 
+    // Keep re-using the same preallocated array
     this.lerpArrays(rawA.background, rawB.background, t, _scratchArrayVal);
     const background = ColorService.rawToRgba(_scratchArrayVal as RawRgb);
 
@@ -146,22 +146,26 @@ export default class AnimationService {
     out?: number[]
   ): number[] {
     const len = a.length;
+
     // Prepare output array
     const res = out || new Array(len);
-    if (res.length !== len) res.length = len;
+    if (res.length !== len) { res.length = len; }
 
     for (let i = 0; i < len; i++) {
       res[i] = a[i] + (b[i] - a[i]) * t;
     }
+
     return res;
   }
 
   public static getRandom(
     keyframe: Keyframe,
-    out?: number[],
+    out: number[],
     seed?: number
   ): number[] {
-    if (!keyframe.random || !keyframe.randomize || keyframe.randomize === "None") { return keyframe.data; }
+    if (!keyframe.random || !keyframe.randomize || keyframe.randomize === Randomize.None) { return keyframe.data; }
+
+    const SEED_OFFSET = 761;
 
     const dataA = keyframe.data;
     const dataB = keyframe.random;
@@ -175,20 +179,37 @@ export default class AnimationService {
     const baseSeed = seed ?? keyframe.randomSeed;
 
     switch (keyframe.randomize) {
-      case "Linear": {
+      case Randomize.Linear: {
         for (let i = 0; i < len; i++) {
-          const elementSeed = baseSeed + (i * 761); 
-          results[i] = this.seededRandomBetween(dataA[i], dataB[i], elementSeed);
+          const elementSeed = baseSeed + (i * SEED_OFFSET); 
+          const r = this.seededRandom(elementSeed);
+          let value = r * (dataB[i] - dataA[i]) + dataA[i];
+
+          // Handle randomize interval
+          if (keyframe.randomizeInterval !== undefined) {
+            const interval = keyframe.randomizeInterval;
+            value = interval === 0 ? value : Math.round(value / interval) * interval;
+          }
+
+          out[i] = value;
         }
         break;
       }
 
-      case "Toggle": {
-        for (let i = 0; i < len; i++) {
-          const elementSeed = baseSeed + (i * 761);
-          const source = this.seededRandom(elementSeed) >= 0.5 ? dataA : dataB;
-          results[i] = source[i];
-        }
+      case Randomize.Toggle: {
+        const seed = baseSeed + SEED_OFFSET; // Only one seed for every element
+        const source = this.seededRandom(seed) >= 0.5 ? dataA : dataB;
+
+        for (let i = 0; i < len; i++) { results[i] = source[i]; }
+        break;
+      }
+
+      case Randomize.Relative: {
+        const seed = baseSeed + SEED_OFFSET; // Only one seed for every element
+        const r = this.seededRandom(seed);
+        const scale = r * (dataB[1] - dataB[0]) * dataB[0];
+
+        for (let i = 0; i < len; i++) { out[i] = dataA[i] * scale; }
         break;
       }
     }
@@ -200,11 +221,12 @@ export default class AnimationService {
     const { prev, next } = track.keyframesAt(time);
     const duration = next.time - prev.time;
 
-    const progress = duration === 0 ? 1 : Math.max(0, Math.min(1, (time - prev.time) / duration));
+    const progress = duration === 0 ? 1 : (time - prev.time) / duration;
+    const clamped = progress < 0 ? 0 : (progress > 1 ? 1 : progress);
     
     _trackQueryResult.prev = prev;
     _trackQueryResult.next = next;
-    _trackQueryResult.t = getEasing(next.easing)(progress);
+    _trackQueryResult.t = getEasing(next.easing)(clamped);
 
     return _trackQueryResult;
   }
@@ -213,7 +235,7 @@ export default class AnimationService {
     let t = seed += 0x6D2B79F5;
     t = Math.imul(t ^ t >>> 15, t | 1);
     t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    return ((t ^ t >>> 14) >>> 0) * 2.3283064365386963e-10; // Faster than division
   }
 
   public static seededRandomBetween(min: number, max: number, seed: number) {

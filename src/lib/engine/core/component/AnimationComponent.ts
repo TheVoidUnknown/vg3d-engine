@@ -2,13 +2,12 @@ import KeyframeTrack from "../keyframeTrack/KeyframeTrack";
 import Component from "./Component";
 
 import type { IParentSettings } from "$lib/engine/services/AnimationService";
-import type { IKeyframeTrack } from "../keyframeTrack/KeyframeTrack.types";
 import type { IKeyframe, KeyframeType } from "../keyframe/Keyframe.types";
 import type { IComponent, IComponentStatic } from "./Component.types";
 import type { MeshType } from "$lib/engine/meshes/3DMeshes";
 
 type PartialTracks = Partial<Record<KeyframeType, KeyframeTrack>>;
-type PartialTracksSerialized = Partial<Record<KeyframeType, IKeyframeTrack>>;
+type PartialTracksSerialized = Partial<Record<KeyframeType, IKeyframe[]>>;
 
 export interface IAnimationComponent extends IComponentStatic {
   parentId?: string;
@@ -23,7 +22,6 @@ export interface IAnimationComponent extends IComponentStatic {
 export default class AnimationComponent extends Component implements IComponent<AnimationComponent, IAnimationComponent> {
   public static readonly TYPE = "Animation" as const;
 
-  public _isDirty!: boolean;
   public _parentIndex?: number;
 
   public parentId?: string;
@@ -100,7 +98,7 @@ export default class AnimationComponent extends Component implements IComponent<
     return this;
   }
 
-  public createTrack<T extends KeyframeType>(type: T, data?: IKeyframeTrack): this {
+  public createTrack<T extends KeyframeType>(type: T, data?: IKeyframe[]): this {
     this.tracks[type] = KeyframeTrack.from(data ?? []);
     return this;
   }

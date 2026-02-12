@@ -1,10 +1,9 @@
 import AnimationComponent, { type IAnimationComponent } from "./AnimationComponent";
 
-import type { IKeyframeTrack } from "../keyframeTrack/KeyframeTrack.types";
-import type { KeyframeType } from "../keyframe/Keyframe.types";
+import type { IKeyframe, KeyframeType } from "../keyframe/Keyframe.types";
 import type { VgdMeshType } from "$lib/engine/meshes/2D/VgdMeshes";
 
-type PartialTracksSerialized = Partial<Record<KeyframeType, IKeyframeTrack>>;
+type PartialTracksSerialized = Partial<Record<KeyframeType, IKeyframe[]>>;
 
 export interface IAnimation2DComponent extends Omit<IAnimationComponent, "mesh"> {
   mesh?: VgdMeshType;

@@ -1,7 +1,7 @@
 import type { IComponent, IComponentStatic } from "./Component.types";
 
 export default abstract class Component implements IComponent<Component, IComponentStatic> {
-  public isDirty = true;
+  public _isDirty = true;
 
   public static type() { return "Component" }
   public type() { return Component.type(); }

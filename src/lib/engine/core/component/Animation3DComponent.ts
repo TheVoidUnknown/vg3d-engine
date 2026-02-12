@@ -1,8 +1,7 @@
-import type { IKeyframeTrack } from "../keyframeTrack/KeyframeTrack.types";
-import type { KeyframeType } from "../keyframe/Keyframe.types";
 import AnimationComponent, { type IAnimationComponent } from "./AnimationComponent";
+import type { IKeyframe, KeyframeType } from "../keyframe/Keyframe.types";
 
-type PartialTracksSerialized = Partial<Record<KeyframeType, IKeyframeTrack>>;
+type PartialTracksSerialized = Partial<Record<KeyframeType, IKeyframe[]>>;
 
 export interface IAnimation3DComponent extends IAnimationComponent {
   origin: {

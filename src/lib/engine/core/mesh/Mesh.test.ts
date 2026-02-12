@@ -50,7 +50,7 @@ describe('Mesh', () => {
       expect(mesh.name).toBe(MOCK_MESH_DATA.name);
       expect(mesh.vertices).toEqual(MOCK_MESH_DATA.vertices);
       expect(mesh.faces).toEqual(MOCK_MESH_DATA.faces);
-      expect(mesh.isDirty).toBe(true);
+      expect(mesh._isDirty).toBe(true);
     });
 
     it('should prevent input mutation', () => {

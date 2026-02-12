@@ -1,15 +1,12 @@
-import Animatable from "../core/animatable/Animatable";
-import Level from "../core/level/Level";
-import Keyframe from "../core/keyframe/Keyframe";
-import KeyframeTrack from "../core/keyframeTrack/KeyframeTrack";
-
-import type { IVgdEvents, IVgdKeyframe, IVgdLevel, IVgdLevelObject, IVgdPrefab, IVgdPrefabInstance, IVgdTheme } from "../vgd/Vgd.types";
-import ColorService from "./ColorService";
-import type { ITheme } from "../core/level/Level.types";
-import { Randomizer, type KeyframeType, type RandomizerType } from "../core/keyframe/Keyframe.types";
+import { VgdAutokillType, type IVgdEvents, type IVgdKeyframe, type IVgdLevel, type IVgdLevelObject, type IVgdPrefab, type IVgdPrefabInstance, type IVgdTheme } from "../vgd/Vgd.types";
+import { type IKeyframe, type KeyframeType } from "../core/keyframe/Keyframe.types";
 import type Animation2DComponent from "../core/component/Animation2DComponent";
-import { getVgdMeshName } from "../meshes/2D/VgdMeshes";
 import { generateUUID } from "three/src/math/MathUtils.js";
+import type { ITheme } from "../core/level/Level.types";
+import { getVgdMeshName } from "../meshes/2D/VgdMeshes";
+import Animatable from "../core/animatable/Animatable";
+import ColorService from "./ColorService";
+import Level from "../core/level/Level";
 
 interface ConversionStats {
   conversionTime: number;
@@ -95,33 +92,57 @@ export default class VgdConverterService {
   }
 
   // TODO: Implement prefab component instead of dumping prefab instances
-  public static prefabInstanceFromVgd(instance: IVgdPrefabInstance, prefab: IVgdPrefab): Animatable[] {
+  public static prefabInstanceFromVgd(
+    instance: IVgdPrefabInstance,
+    prefab: IVgdPrefab
+  ): Animatable[] {
     const objects: Animatable[] = [];
+    const idMap: Record<string, string> = {};
 
-    const parent = new Animatable();
-    const comp = parent.addComponent("Animation2D");
+    // Create the Prefab Root
+    const rootParent = new Animatable();
+    rootParent.id = instance.id;
+    rootParent.name = "Prefab Root";
 
-    parent.id = instance.id;
-    parent.name = "Prefab Parent";
-
+    const comp = rootParent.addComponent("Animation2D");
     comp.spawnTime = instance.t;
 
+    // Apply any instance settings if they exist
     if (instance.e) {
       const move = instance.e[0]?.ev ?? [0, 0];
       const scale = instance.e[1]?.ev ?? [1, 1];
+      const rotation = instance.e[2]?.ev ?? [0, 0];
 
-      comp.addKeyframe("Move", { data: [ move[0] ?? 0,  move[1] ?? 0 ] });
-      comp.addKeyframe("Scale", { data: [ scale[0] ?? 0, scale[1] ?? 0 ] });
+      comp.addKeyframe("Move", { data: [move[0] ?? 0, move[1] ?? 0] });
+      comp.addKeyframe("Scale", { data: [scale[0] ?? 0, scale[1] ?? 0] });
+      comp.addKeyframe("Rotation", { data: [rotation[0] ?? 0, rotation[1] ?? 0] });
     }
 
-    objects.push(parent);
+    objects.push(rootParent);
 
+    // Generate new IDs for all prefab objects
     prefab.objs.forEach((o) => {
-      o.id = generateUUID();
-      if (!o.p_id) { o.p_id = parent.id; o.p_t = "111"; }
+      idMap[o.id.toString()] = generateUUID();
+    });
 
-      objects.push(this.animatableFromVgd(o, instance.t));
-    })
+    // Re-link the objects and hydrate them
+    prefab.objs.forEach((o) => {
+      const objClone = structuredClone(o); 
+
+      const oldId = o.id.toString();
+      objClone.id = idMap[oldId];
+
+      if (!objClone.p_id || !idMap[objClone.p_id]) {
+        // If there's no parent or the parent isn't part of this prefab, attach it to the instance root.
+        objClone.p_id = rootParent.id;
+        objClone.p_t = "111";
+      } else {
+        // Otherwise, use the remapped ID from our first pass
+        objClone.p_id = idMap[objClone.p_id];
+      }
+
+      objects.push(this.animatableFromVgd(objClone, instance.t));
+    });
 
     return objects;
   }
@@ -140,10 +161,10 @@ export default class VgdConverterService {
       .setParenting("Scale", false)
       .setParenting("Rotation", true)
 
-    const move =     this.keyframeTrackFromVgd(data.e[0].k, "Move",     startTime);
-    const scale =    this.keyframeTrackFromVgd(data.e[1].k, "Scale",    startTime);
+    const move     = this.keyframeTrackFromVgd(data.e[0].k, "Move",     startTime);
+    const scale    = this.keyframeTrackFromVgd(data.e[1].k, "Scale",    startTime);
     const rotation = this.keyframeTrackFromVgd(data.e[2].k, "Rotation", startTime);
-    const color =    this.keyframeTrackFromVgd(data.e[3].k, "Color",    startTime);
+    const color    = this.keyframeTrackFromVgd(data.e[3].k, "Color",    startTime);
 
     comp.createTrack("Move", move);
     comp.createTrack("Scale", scale);
@@ -152,11 +173,10 @@ export default class VgdConverterService {
 
     if (data.ak_t) {
       switch (data.ak_t) {
-        case (1): { // Last keyframe
+        case (VgdAutokillType.LastKeyframe): {
           let longest = 0;
 
           [move, scale, rotation, color].forEach((track) => {
-            track.sortByTime();
             track.forEach((kf) => { if (kf.time > longest) { longest = kf.time; } });
           });
 
@@ -164,11 +184,10 @@ export default class VgdConverterService {
           break;
         }
 
-        case (2): { // Last keyframe offset
+        case (VgdAutokillType.LastKeyframeOffset): {
           let longest = 0;
 
           [move, scale, rotation, color].forEach((track) => {
-            track.sortByTime();
             track.forEach((kf) => { if (kf.time > longest) { longest = kf.time; } });
           });
 
@@ -176,12 +195,12 @@ export default class VgdConverterService {
           break;
         }
 
-        case (3): { // Fixed time
+        case (VgdAutokillType.FixedTime): {
           comp.lifetime = (data.ak_o || 0);
           break;
         }
 
-        case (4): { // Song time
+        case (VgdAutokillType.SongTime): {
           comp.lifetime = (data.ak_o || 0) - comp.spawnTime;
           break;
         }
@@ -223,8 +242,8 @@ export default class VgdConverterService {
     data: IVgdKeyframe[],
     type: KeyframeType,
     timeOffset = 0
-  ): KeyframeTrack {
-    const track = new KeyframeTrack();
+  ): IKeyframe[] {
+    const track: IKeyframe[] = [];
 
     if (type == "Rotation") {
       let rotation = 0;
@@ -247,13 +266,18 @@ export default class VgdConverterService {
     data: IVgdKeyframe,
     type: KeyframeType,
     timeOffset = 0
-  ): Keyframe {
-    const keyframe = new Keyframe();
+  ): IKeyframe {
+    const keyframe: IKeyframe = { time: 0, data: [] };
 
     keyframe.time = (data.t ?? 0) + timeOffset;
 
     if (data.ct) { keyframe.easing = data.ct; }
-    if (data.r) { keyframe.randomize = Object.keys(Randomizer)[data.r] as RandomizerType; }
+    if (data.r) {
+      // Jank as hell, but it works
+      // [0 = 0], [1 = 1], [3 = 2], [4 = 3]
+      keyframe.randomize = data.r > 1 ? data.r - 1 : data.r;
+      console.log(data.r, keyframe.randomize);
+    }
 
     if (data.ev) {
       switch(type) {
@@ -275,10 +299,22 @@ export default class VgdConverterService {
 
     if (data.er) {
       switch(type) {
-        case "Color": { keyframe.random = [ data.er[0], data.er[1] ?? 0 ]; break; }
-        case "Rotation": { keyframe.random = [ data.er[0] ]; break; }
-        default: { keyframe.random = data.er; }
+        case "Color": {
+          keyframe.random = [ data.er[0], data.er[1] ?? 0 ];
+          break;
+        }
+
+        case "Rotation": {
+          keyframe.random = [ data.er[0] ];
+          break;
+        }
+
+        default: {
+          keyframe.random = data.er;
+        }
       }
+
+      keyframe.randomizeInterval = data.er[2];
     }
 
     if (!this.stats.keyframes[type]) { this.stats.keyframes[type] = 1; } else { this.stats.keyframes[type]++; }

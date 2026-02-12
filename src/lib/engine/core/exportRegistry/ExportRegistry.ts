@@ -6,7 +6,7 @@ import type { ComponentType } from "../component/Component.types";
 export type ExportHandler = (
   component: ComponentType,
   target: Animatable,
-  objects: Map<string, Animatable>
+  objects: (Animatable | null)[]
 ) => IVgdLevelObject[];
 
 export default class ExportRegistry {
@@ -31,7 +31,7 @@ export default class ExportRegistry {
   public static runHandler(
     component: ComponentType,
     target: Animatable,
-    objects: Map<string, Animatable>
+    objects: (Animatable | null)[]
   ): IVgdLevelObject[] {
     component.update();
     const type = component.type();

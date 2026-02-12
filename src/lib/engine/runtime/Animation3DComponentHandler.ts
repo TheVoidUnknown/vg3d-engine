@@ -19,10 +19,10 @@ const handleAnimation3DComponent: RuntimeHandler = (
   // Interpolate
   AnimationService.interpolateTracks(
     time, 
-    component, 
+    component,
+    _scratchParams3D,
     component.parentId ? component.parentSettings : undefined, 
-    false, 
-    _scratchParams3D
+    false
   );
 
   // Check if the component has these tracks, implying the scratchParams has data.

@@ -1,11 +1,11 @@
 import type Animatable from "../core/animatable/Animatable";
 import ExportRegistry from "../core/exportRegistry/ExportRegistry";
 import type Keyframe from "../core/keyframe/Keyframe";
-import { Randomizer, type KeyframeType } from "../core/keyframe/Keyframe.types";
+import { Randomize, type KeyframeType } from "../core/keyframe/Keyframe.types";
 import type KeyframeTrack from "../core/keyframeTrack/KeyframeTrack";
 import type Level from "../core/level/Level";
 import type { ITheme } from "../core/level/Level.types";
-import type { IVgdKeyframe, IVgdLevel, IVgdLevelObject, IVgdTheme } from "../vgd/Vgd.types";
+import { VgdRandomize, type IVgdKeyframe, type IVgdLevel, type IVgdLevelObject, type IVgdTheme } from "../vgd/Vgd.types";
 import ColorService from "./ColorService";
 
 export default class ExportConverterService {
@@ -16,8 +16,9 @@ export default class ExportConverterService {
       themes: []
     }
 
-    instance.objects.forEach((o) => {
-      level.objects.push(...this.toVgdLevelObject(o, instance.objects));
+    instance._objects.forEach((o) => {
+      if (!o) { return; }
+      level.objects.push(...this.toVgdLevelObject(o, instance._objects));
     })
 
     instance.themes.forEach((t) => {
@@ -29,12 +30,12 @@ export default class ExportConverterService {
 
   public static toVgdLevelObject(
     instance: Animatable,
-    allObjects?: Map<string, Animatable>
+    allObjects?: (Animatable | null)[]
   ): IVgdLevelObject[] {
     const objects: IVgdLevelObject[] = [];
 
     instance.components.forEach((comp) => {
-      const levelObjects = ExportRegistry.runHandler(comp, instance, allObjects ?? new Map());
+      const levelObjects = ExportRegistry.runHandler(comp, instance, allObjects ?? []);
       for (const o of levelObjects) { objects.push(o); }
     })
 
@@ -99,13 +100,16 @@ export default class ExportConverterService {
 
     if (instance.time && instance.time - offset > 0) { keyframe.t = instance.time - offset; }
 
-    if (instance.randomize && instance.randomize !== "None") {
-      keyframe.r = Object.keys(Randomizer).indexOf(instance.randomize);
+    if (instance.randomize && instance.randomize !== Randomize.None) {
+      keyframe.r = Object.values(VgdRandomize).indexOf(instance.randomize);
     }
 
     if (instance.easing && instance.easing !== "Linear") { keyframe.ct = instance.easing; }
-    if (instance.random) { keyframe.er = [ instance.random[0], instance.random[1] ]; }
     if (instance.themeId) { keyframe.evs = [ instance.themeId ]; }
+    if (instance.random) {
+      keyframe.er = [ instance.random[0], instance.random[1] ];
+      if (instance.randomizeInterval !== undefined) { keyframe.er[2] = instance.randomizeInterval; }
+    }
 
     return keyframe;
   }

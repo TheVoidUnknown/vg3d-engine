@@ -1,9 +1,14 @@
 import Keyframe from "../keyframe/Keyframe";
 import type { IKeyframe } from "../keyframe/Keyframe.types";
-import type { IKeyframeTrack, KeyframePair } from "./KeyframeTrack.types";
 
-// TODO: Rewrite to just use flat arrays for keyframe data, this has so much overhead
-export default class KeyframeTrack extends Array<Keyframe> implements IKeyframeTrack {
+export interface KeyframePair {
+  prev: Keyframe;
+  next: Keyframe;
+}
+
+// As awful as it looks, apparently [ Keyframe, Keyframe, Keyframe ... ]
+// is significantly faster than multiple arrays of destructured keyframe properties
+export default class KeyframeTrack extends Array<Keyframe> {
   public randomSeed!: number;
 
   private isDirty: boolean;
@@ -18,23 +23,22 @@ export default class KeyframeTrack extends Array<Keyframe> implements IKeyframeT
     if (initial) {
       initial.forEach((v, i) => this[i] = Keyframe.from(v));
     }
-
   }
 
   public static from(keyframes: IKeyframe[]): KeyframeTrack {
     return new KeyframeTrack(keyframes);
   }
 
-  public serialize(): IKeyframeTrack {
+  public serialize(): IKeyframe[] {
     const keyframes: IKeyframe[] = [];
     for (const kf of this) { keyframes.push(kf.serialize()); }
 
-    return keyframes as IKeyframeTrack;
+    return keyframes as IKeyframe[];
   }
 
   public refreshRandomSeed() {
     this.randomSeed = Math.floor(Math.random() * 999999);
-    for (const kf of this) { kf.refreshRandomSeed(); }
+    for (const kf of this) { kf.refreshSeed(); }
   }
 
   public sortByTime(): this {

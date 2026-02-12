@@ -1,5 +1,19 @@
 import type { Easing } from "../core/easing/Easing.types";
 
+export enum VgdAutokillType {
+  LastKeyframe = 1,
+  LastKeyframeOffset = 2,
+  FixedTime = 3,
+  SongTime = 4
+}
+
+export enum VgdRandomize {
+  None = 0,
+  Linear = 1,
+  Toggle = 3,
+  Relative = 4
+}
+
 export interface IVgdLevel {
   events: IVgdEvents;
   objects: IVgdLevelObject[];
@@ -27,8 +41,7 @@ export interface IVgdPrefabInstance {
   e?: [
     { ev?: number[]; },
     { ev?: number[]; },
-    // {}  Left over from rotation?
-    // [ {"ev": [ 0.0, 0.0 ]}, {"ev": [ 1.0, -1.0]}, {} ]
+    { ev?: number[]; },
   ]
 }
 

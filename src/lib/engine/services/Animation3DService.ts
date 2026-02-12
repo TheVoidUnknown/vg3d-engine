@@ -8,11 +8,11 @@ import { Vector3, Quaternion, Euler, Matrix4, MathUtils } from "three";
 import type Level from "../core/level/Level";
 import Mat4Pool from "../core/mat4Pool/Mat4Pool";
 
-const _tempVec3Pos = new Vector3();
-const _tempVec3Scale = new Vector3();
-const _tempEuler = new Euler();
-const _tempQuat = new Quaternion();
-const _tempOriginMat = new Matrix4();
+const _scratchVec3Pos = new Vector3();
+const _scratchVec3Scale = new Vector3();
+const _scratchEuler = new Euler();
+const _scratchQuat = new Quaternion();
+const _scratchOriginMat = new Matrix4();
 
 export default class Animation3DService {
   public static getLocalTRS(
@@ -31,23 +31,23 @@ export default class Animation3DService {
     const scaleZ = parameters.Scale ? parameters.Scale[2] : 1;
 
     // Prepare components
-    _tempVec3Pos.set(moveX, moveY, moveZ);
-    _tempVec3Scale.set(scaleX, scaleY, scaleZ);
+    _scratchVec3Pos.set(moveX, moveY, moveZ);
+    _scratchVec3Scale.set(scaleX, scaleY, scaleZ);
 
     // Handle rotation in euler angles first
     if (parameters.Rotation) {
-      _tempEuler.set(
+      _scratchEuler.set(
         MathUtils.degToRad(parameters.Rotation[0]),
         MathUtils.degToRad(parameters.Rotation[1]),
         MathUtils.degToRad(parameters.Rotation[2])
       );
-      _tempQuat.setFromEuler(_tempEuler);
+      _scratchQuat.setFromEuler(_scratchEuler);
     } else {
-      _tempQuat.set(0, 0, 0, 1);
+      _scratchQuat.set(0, 0, 0, 1);
     }
 
     // Compose T * R * S
-    target.compose(_tempVec3Pos, _tempQuat, _tempVec3Scale);
+    target.compose(_scratchVec3Pos, _scratchQuat, _scratchVec3Scale);
 
     return target;
   }
@@ -69,14 +69,18 @@ export default class Animation3DService {
       const parent = level.getObject(parentId);
       if (!parent) { break; }
 
+      // TODO: Rewrite to accept number[][] instead of IAnimationParameters,
+      // trying to clear a scratch object is just as expensive as allocating a new one
+      const params = {};
+
       const parentComp = parent.getComponent("Animation3D") as Animation3DComponent;
       const currentComp = current.getComponent("Animation3D") as Animation3DComponent;
 
-      // Get a temporary matrix from the pool for the parent's local transform
+      // Get a scratchorary matrix from the pool for the parent's local transform
       const parentLocalMatrix = Mat4Pool.get();
       
       // Calculate parent's parameters, stuff its matrix into the pool
-      const parentParameters = AnimationService.interpolateTracks(time, parentComp, currentComp.parentSettings, true);
+      const parentParameters = AnimationService.interpolateTracks(time, parentComp, params, currentComp.parentSettings, true);
       this.getLocalTRS(parentLocalMatrix, parentParameters);
       outWorldMatrix.premultiply(parentLocalMatrix);
 
@@ -103,8 +107,8 @@ export default class Animation3DService {
 
     // Apply origin pivot (PA does +origin instead of -origin for... some reason)
     if (comp.origin && (comp.origin.x !== 0 || comp.origin.y !== 0 || comp.origin.z !== 0)) {
-      _tempOriginMat.makeTranslation(comp.origin.x, comp.origin.y, comp.origin.z);
-      worldMatrix.multiply(_tempOriginMat);
+      _scratchOriginMat.makeTranslation(comp.origin.x, comp.origin.y, comp.origin.z);
+      worldMatrix.multiply(_scratchOriginMat);
     }
 
     return worldMatrix;
