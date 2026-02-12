@@ -276,7 +276,6 @@ export default class VgdConverterService {
       // Jank as hell, but it works
       // [0 = 0], [1 = 1], [3 = 2], [4 = 3]
       keyframe.randomize = data.r > 1 ? data.r - 1 : data.r;
-      console.log(data.r, keyframe.randomize);
     }
 
     if (data.ev) {
