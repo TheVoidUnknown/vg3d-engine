@@ -1,11 +1,15 @@
 {
 	"name": "vg3d-engine",
-	"private": true,
 	"version": "0.0.1",
 	"type": "module",
-	"exports": {
-		".": "./dist/index.js"
-	},
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts", 
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "files": [
     "dist"
   ],
