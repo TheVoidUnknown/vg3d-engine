@@ -1,7 +1,7 @@
 import { Vector3 } from "three";
 import type { IMesh } from "../core/mesh/Mesh.types";
 
-export default function parseObj(data: string): IMesh {
+export function parseObj(data: string): IMesh {
   const vertices: Vector3[] = [];
   const faces: number[][] = [];
 

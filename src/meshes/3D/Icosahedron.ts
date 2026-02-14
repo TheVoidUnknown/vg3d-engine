@@ -1,7 +1,7 @@
 import type { IMesh } from "../../core/mesh/Mesh.types";
 import { Vector3 } from "three";
 
-const Icosahedron = (radius: number = 1, subdivisions: number = 0): IMesh => {
+export const Icosahedron = (radius: number = 1, subdivisions: number = 0): IMesh => {
   const t = (1 + Math.sqrt(5)) / 2; // Golden ratio
 
   // Start with the 12 vertices of an icosahedron, normalized to form a unit sphere
@@ -86,5 +86,3 @@ const Icosahedron = (radius: number = 1, subdivisions: number = 0): IMesh => {
     faces: faces
   };
 }
-
-export default Icosahedron;

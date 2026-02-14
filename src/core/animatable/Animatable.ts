@@ -1,10 +1,10 @@
-import ComponentRegistry from "../componentRegistry/ComponentRegistry";
+import { ComponentRegistry } from "../componentRegistry/ComponentRegistry";
 import { generateUUID } from "three/src/math/MathUtils.js";
 
 import type { ComponentDataType, ComponentInstanceType, ComponentNameType } from "../componentRegistry";
 import type { IAnimatable } from "./Animatable.types";
 
-export default class Animatable {
+export class Animatable {
   public id: string;
   public name: string;
   public components: ComponentInstanceType[];

@@ -1,6 +1,6 @@
 import { Vector3 } from "three";
 import type { IMesh } from "../core/mesh/Mesh.types";
-import Mesh from "../core/mesh/Mesh";
+import { Mesh } from "../core/mesh/Mesh";
 import earcut from "earcut";
 
 export class MeshService {

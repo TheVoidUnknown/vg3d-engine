@@ -13,7 +13,7 @@ export const getEasing = (name?: Easing): EaseFunction => {
   return EaseFunctions[name || "Linear" as Easing] || EaseFunctions.Linear;
 }
 
-const EaseFunctions = {
+export const EaseFunctions = {
   Linear: (t: number) => t,
   Instant: () => 0,
   
@@ -82,5 +82,3 @@ const EaseFunctions = {
   OutExpo: (t: number) => (t === 1 ? 1 : (-Math.pow(2, -10 * t) + 1)),
   InOutExpo: (t: number) => (t === 1 ? 1 : (t < 0.5 ? Math.pow(2, 10 * (t * 2 - 1)) / 2 : (-Math.pow(2, -10 * (t * 2 - 1)) + 2) / 2)),
 } as const;
-
-export default EaseFunctions;

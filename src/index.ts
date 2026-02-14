@@ -1,7 +1,7 @@
-import registerComponentHandlers from "./registry/RegisterComponentHandlers";
-import registerExportHandlers from "./registry/RegisterExportHandlers";
-import registerComponents from "./registry/RegisterComponents";
-import registerMeshes from "./registry/RegisterMeshes";
+import { registerComponentHandlers } from "./registry/RegisterComponentHandlers";
+import { registerExportHandlers } from "./registry/RegisterExportHandlers";
+import { registerComponents } from "./registry/RegisterComponents";
+import { registerMeshes } from "./registry/RegisterMeshes";
 
 export * from "./components";
 export * from "./core";

@@ -1,5 +1,5 @@
-import KeyframeTrack from "../../core/keyframeTrack/KeyframeTrack";
-import Component from "../../core/component/Component";
+import { KeyframeTrack } from "../../core/keyframeTrack/KeyframeTrack";
+import { Component } from "../../core/component/Component";
 
 import type { IKeyframe, KeyframeType } from "../../core/keyframe/Keyframe.types";
 import type { IComponentData } from "../../core/component/Component.types";
@@ -17,7 +17,7 @@ export interface IAnimationData<M = MeshType | VgdMeshType> extends IComponentDa
 }
 
 // Methods and properties shared between 2D and 3D
-export default abstract class AnimationComponent<D extends IAnimationData> extends Component<D> {
+export abstract class AnimationComponent<D extends IAnimationData> extends Component<D> {
   public parentId?: string;
   public tracks: Partial<Record<KeyframeType, KeyframeTrack>> = {}; 
   public spawnTime: number = 1;

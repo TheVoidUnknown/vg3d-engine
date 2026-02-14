@@ -1,12 +1,12 @@
-import RenderTarget from "./RenderTarget";
-import Shader from "./Shader";
-import ScreenQuad from "./ScreenQuad";
+import { RenderTarget } from "./RenderTarget";
+import { ScreenQuad } from "./ScreenQuad";
+import { Shader } from "./Shader";
 
 import VS_QUAD from "../shaders/quad.vert";
 import FS_DOWNSAMPLE from "../shaders/downsample.frag";
 import FS_UPSAMPLE from "../shaders/upsample.frag";
 
-export default class Bloom {
+export class Bloom {
   private mips: RenderTarget[] = [];
   private shaderDown: Shader;
   private shaderUp: Shader;

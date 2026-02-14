@@ -7,7 +7,7 @@ const DEFAULT: IKeyframe = {
   data: []
 }
 
-export default class Keyframe implements IKeyframe {
+export class Keyframe implements IKeyframe {
   public time!: number;
   public easing!: Easing;
   public data!: number[];

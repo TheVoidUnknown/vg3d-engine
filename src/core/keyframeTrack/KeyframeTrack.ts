@@ -1,4 +1,4 @@
-import Keyframe from "../keyframe/Keyframe";
+import { Keyframe } from "../keyframe/Keyframe";
 import type { IKeyframe } from "../keyframe/Keyframe.types";
 
 export interface KeyframePair {
@@ -8,7 +8,7 @@ export interface KeyframePair {
 
 // As awful as it looks, apparently [ Keyframe, Keyframe, Keyframe ... ]
 // is significantly faster than multiple arrays of destructured keyframe properties
-export default class KeyframeTrack extends Array<Keyframe> {
+export class KeyframeTrack extends Array<Keyframe> {
   public randomSeed!: number;
 
   private isDirty: boolean;

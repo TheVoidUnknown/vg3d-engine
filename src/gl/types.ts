@@ -1,5 +1,5 @@
 import type { Matrix4, Vector3 } from 'three';
-import Shader from './Shader';
+import { Shader } from './Shader';
 
 export interface ILightSource {
   pos: Vector3;

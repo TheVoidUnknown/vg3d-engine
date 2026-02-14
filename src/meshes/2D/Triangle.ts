@@ -1,4 +1,4 @@
-const VgdTriangles = [
+export const VgdTriangles = [
   {
     name: "TriangleFilled",
     vertices: [
@@ -101,5 +101,3 @@ const VgdTriangles = [
     ]
   }
 ] as const;
-
-export default VgdTriangles;

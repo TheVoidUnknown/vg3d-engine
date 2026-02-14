@@ -1,6 +1,6 @@
 import { Matrix4 } from "three";
 
-export default class Mat4Pool {
+export class Mat4Pool {
   private static _pool: Matrix4[] = [];
   private static _count = 0;
 

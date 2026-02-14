@@ -1,10 +1,10 @@
-import Mesh from "../mesh/Mesh";
+import { Mesh } from "../mesh/Mesh";
 
 import type { VgdMeshType } from "../../meshes/2D/meshes";
 import type { MeshType } from "../../meshes/3D/meshes";
 import type { IMesh } from "../mesh/Mesh.types";
 
-export default class MeshRegistry {
+export class MeshRegistry {
   public static meshData: Map<string, IMesh>;
   public static meshes: Map<string, Mesh>;
 

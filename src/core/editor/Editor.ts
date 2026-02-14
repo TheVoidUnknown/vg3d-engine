@@ -7,13 +7,13 @@ import type { ICamera } from "../../gl/types";
 import type { IEditor } from "./Editor.types";
 
 // utils
-import AnimationService from "../../services/AnimationService";
-import RuntimeService from "../../services/RuntimeService";
-import MeshRegistry from "../meshRegistry/MeshRegistry";
-import ColorService from "../../services/ColorService";
-import Animatable from "../animatable/Animatable";
-import Renderer from "../../gl/Renderer";
-import Level from "../level/Level";
+import { AnimationService } from "../../services/AnimationService";
+import { RuntimeService } from "../../services/RuntimeService";
+import { MeshRegistry } from "../meshRegistry/MeshRegistry";
+import { ColorService } from "../../services/ColorService";
+import { Animatable } from "../animatable/Animatable";
+import { Renderer } from "../../gl/Renderer";
+import { Level } from "../level/Level";
 
 // threejs
 import { Camera, Matrix4, OrthographicCamera, PerspectiveCamera, Vector3 } from "three";
@@ -67,7 +67,7 @@ const DEFAULT_THEME: ITheme = {
   guiAccent: { r: 200, g: 200, b: 200 }
 }
 
-export default class Editor {
+export class Editor {
   public readonly isHeadless: boolean;
 
   public level!: Level;

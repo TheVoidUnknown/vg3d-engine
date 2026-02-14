@@ -1,13 +1,13 @@
-import ExportConverterService from "../../services/ExportConverterService";
+import { ExportConverterService } from "../../services/ExportConverterService";
 import { getVgdOffsetsFromName } from "../../meshes/2D/meshes";
 
-import type Animation2DComponent from "./Animation2DComponent";
-import type Animatable from "../../core/animatable/Animatable";
+import type { Animation2DComponent } from "./Animation2DComponent";
+import type { Animatable } from "../../core/animatable/Animatable";
 import type { ExportHandler } from "../../core/exportRegistry/ExportRegistry";
 import type { IVgdLevelObject } from "../../vgd/Vgd.types";
 
 
-const exportAnimation2DComponent: ExportHandler = (
+export const exportAnimation2DComponent: ExportHandler = (
   component: Animation2DComponent,
   target: Animatable
 ) => {
@@ -78,5 +78,3 @@ const exportAnimation2DComponent: ExportHandler = (
 
   return [ object ];
 }
-
-export default exportAnimation2DComponent;

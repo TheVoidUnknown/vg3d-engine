@@ -1,9 +1,9 @@
 import { generateUUID } from "three/src/math/MathUtils.js";
 import type { ILevel, ITheme } from "./Level.types";
-import Animatable from "../animatable/Animatable";
+import { Animatable } from "../animatable/Animatable";
 import type { IAnimatable } from "../animatable/Animatable.types";
 
-export default class Level {
+export class Level {
   public id: string;
   public displayName: string;
 

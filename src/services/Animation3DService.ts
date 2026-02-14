@@ -1,20 +1,20 @@
 // component
-import type Animation3DComponent from "../components/Animation3D/Animation3DComponent";
+import type { Animation3DComponent } from "../components/Animation3D/Animation3DComponent";
 
 // threejs
 import { Vector3, Quaternion, Euler, Matrix4, MathUtils } from "three";
 
 // types
-import type Animatable from "../core/animatable/Animatable";
-import type Level from "../core/level/Level";
+import type { Animatable } from "../core/animatable/Animatable";
+import type { Level } from "../core/level/Level";
 import type { IAnimationParameters } from "./AnimationService";
 import type { ITheme } from "../core/level/Level.types";
 import type { RawRgb } from "./ColorService";
 
 // utils
-import AnimationService from "./AnimationService";
-import Mat4Pool from "../core/mat4Pool/Mat4Pool";
-import ColorService from "./ColorService";
+import { AnimationService } from "./AnimationService";
+import { Mat4Pool } from "../core/mat4Pool/Mat4Pool";
+import { ColorService } from "./ColorService";
 
 
 
@@ -24,7 +24,7 @@ const _scratchEuler = new Euler();
 const _scratchQuat = new Quaternion();
 const _scratchOriginMat = new Matrix4();
 
-export default class Animation3DService {
+export class Animation3DService {
   public static getLocalTRS(
     target: Matrix4,
     parameters: IAnimationParameters

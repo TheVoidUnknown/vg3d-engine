@@ -1,4 +1,4 @@
-export default class ScreenQuad {
+export class ScreenQuad {
   private vao: WebGLVertexArrayObject;
   
   constructor(private gl: WebGL2RenderingContext) {

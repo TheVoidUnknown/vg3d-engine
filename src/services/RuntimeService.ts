@@ -1,7 +1,7 @@
-import RenderBatch from "../gl/RenderBatch";
+import { RenderBatch } from "../gl/RenderBatch";
 
-import type Animatable from "../core/animatable/Animatable";
-import type Level from "../core/level/Level";
+import type { Animatable } from "../core/animatable/Animatable";
+import type { Level } from "../core/level/Level";
 import type { ITheme } from "../core/level/Level.types";
 import type { ComponentInstanceType } from "../core";
 import type { RawRgb } from "./ColorService";
@@ -16,7 +16,7 @@ export type RuntimeHandler = (
   theme: ITheme
 ) => void;
 
-export default class RuntimeService {
+export class RuntimeService {
   public static isError: boolean;
   private static handlers: Map<string, RuntimeHandler>;
 

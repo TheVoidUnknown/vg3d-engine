@@ -13,7 +13,7 @@ interface BatchBuffer {
   count: number;
 }
 
-export default class RenderBatch {
+export class RenderBatch {
   private _buffers: [BatchBuffer, BatchBuffer];
   private _writeIndex: number = 0;
   private _readIndex: number = 1;

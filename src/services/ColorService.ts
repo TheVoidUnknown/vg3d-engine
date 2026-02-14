@@ -10,7 +10,7 @@ export type GradientStop = { color: string, pos: number };
 export const LUMINANCE_RGB_WEIGHTS = { r: 299, g: 587, b: 114 };
 export const ORANGENESS_HUE_ANCHOR = 200;
 
-export default class ColorService {
+export class ColorService {
 
   public static hslFix(hsl: Hsl): Hsl {
     let aH = (hsl.h || 0);

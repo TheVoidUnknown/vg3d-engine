@@ -3,7 +3,7 @@
 import type { IComponentData, IComponentStatic } from "./Component.types";
 
 // Every component must extend this class
-export default abstract class Component<D extends IComponentData> {
+export abstract class Component<D extends IComponentData> {
   public _isDirty = true;
   
   public abstract type(): string;

@@ -1,4 +1,4 @@
-const VgdHexagons = [
+export const VgdHexagons = [
   {
     name: "HexagonFilled",
     vertices: [
@@ -153,5 +153,3 @@ const VgdHexagons = [
     ]
   }
 ] as const;
-
-export default VgdHexagons;

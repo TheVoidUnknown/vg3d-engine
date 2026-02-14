@@ -1,4 +1,4 @@
-import type Component from "./Component";
+import type { Component } from "./Component";
 
 // The shape of serialized data
 export interface IComponentData {

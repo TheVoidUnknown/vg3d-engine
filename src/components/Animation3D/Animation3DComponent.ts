@@ -1,5 +1,5 @@
 import type { MeshType } from "../../meshes";
-import AnimationComponent from "../Animation/AnimationComponent";
+import { AnimationComponent } from "../Animation/AnimationComponent";
 import type { IAnimationData } from "../Animation/AnimationComponent";
 
 export interface IAnimation3DData extends IAnimationData {
@@ -8,7 +8,7 @@ export interface IAnimation3DData extends IAnimationData {
   origin: { x: number; y: number; z: number };
 }
 
-export default class Animation3DComponent extends AnimationComponent<IAnimation3DData> {
+export class Animation3DComponent extends AnimationComponent<IAnimation3DData> {
   public static readonly TYPE = "Animation3D" as const;
 
   public origin = { x: 0, y: 0, z: 0 };

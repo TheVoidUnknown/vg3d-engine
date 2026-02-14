@@ -1,4 +1,4 @@
-const VgdSquares = [
+export const VgdSquares = [
   {
     name: "SquareFilled",
     vertices: [
@@ -72,5 +72,3 @@ const VgdSquares = [
     ]
   }
 ] as const;
-
-export default VgdSquares;

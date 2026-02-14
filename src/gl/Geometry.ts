@@ -1,4 +1,4 @@
-export default class Geometry {
+export class Geometry {
   private vao: WebGLVertexArrayObject | null;
   private vboPos: WebGLBuffer | null;
   private vboNor: WebGLBuffer | null;

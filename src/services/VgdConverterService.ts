@@ -1,5 +1,5 @@
 // types
-import type Animation2DComponent from "../components/Animation2D/Animation2DComponent";
+import type { Animation2DComponent } from "../components/Animation2D/Animation2DComponent";
 import type { IVgdEvents, IVgdKeyframe, IVgdLevel, IVgdLevelObject, IVgdPrefab, IVgdPrefabInstance, IVgdTheme } from "../vgd/Vgd.types";
 import type { IKeyframe, KeyframeType } from "../core/keyframe/Keyframe.types";
 import type { ITheme } from "../core/level/Level.types";
@@ -8,9 +8,9 @@ import { VgdAutokillType } from "../vgd/Vgd.types";
 // utils
 import { generateUUID } from "three/src/math/MathUtils.js";
 import { getVgdMeshName } from "../meshes/2D/meshes";
-import Animatable from "../core/animatable/Animatable";
-import ColorService from "./ColorService";
-import Level from "../core/level/Level";
+import { Animatable } from "../core/animatable/Animatable";
+import { ColorService } from "./ColorService";
+import { Level } from "../core/level/Level";
 
 
 
@@ -24,7 +24,7 @@ interface ConversionStats {
   keyframes: { [K in KeyframeType]?: number };
 }
 
-export default class VgdConverterService {
+export class VgdConverterService {
   public static stats: ConversionStats;
 
   public static resetStats() {

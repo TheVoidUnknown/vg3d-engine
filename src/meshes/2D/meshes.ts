@@ -1,11 +1,12 @@
 import { Vector3 } from "three"
+import { VgdSquares } from "./Square";
+import { VgdTriangles } from "./Triangle";
+import { VgdPoint } from "./Point";
+import { VgdCircles } from "./Circle";
+import { VgdArrows } from "./Arrow";
+import { VgdHexagons } from "./Hexagon";
+
 import type { IMesh } from "../../core/mesh/Mesh.types";
-import VgdSquares from "./Square";
-import VgdTriangles from "./Triangle";
-import VgdPoint from "./Point";
-import VgdCircles from "./Circle";
-import VgdArrows from "./Arrow";
-import VgdHexagons from "./Hexagon";
 
 // Mesh data shamelessly stolen from
 // https://github.com/Reimnop/ParallelAnimationSystem/blob/master/ParallelAnimationSystem/Core/PaAssets.cs

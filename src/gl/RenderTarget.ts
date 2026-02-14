@@ -1,4 +1,4 @@
-export default class RenderTarget {
+export class RenderTarget {
   public fbo: WebGLFramebuffer;
   public texture: WebGLTexture;
   public width: number;

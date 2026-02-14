@@ -1,6 +1,6 @@
 // types
-import type KeyframeTrack from "../core/keyframeTrack/KeyframeTrack";
-import type Keyframe from "../core/keyframe/Keyframe";
+import type { KeyframeTrack } from "../core/keyframeTrack/KeyframeTrack";
+import type { Keyframe } from "../core/keyframe/Keyframe";
 import { Randomize, type KeyframeType } from "../core/keyframe/Keyframe.types";
 import type { ITheme } from "../core/level/Level.types";
 import type { ComponentInstanceType } from "../core";
@@ -8,7 +8,7 @@ import type { RawRgb } from "./ColorService";
 
 // utils
 import { getEasing } from "../core/easing/Easing.const";
-import ColorService from "./ColorService";
+import { ColorService } from "./ColorService";
 
 export type IParentSettings = {
   [K in KeyframeType]?: {
@@ -42,7 +42,7 @@ const _trackQueryResult = {
   t: 0
 };
 
-export default class AnimationService {
+export class AnimationService {
   public static interpolateTracks(
     time: number,
     component: ComponentInstanceType,

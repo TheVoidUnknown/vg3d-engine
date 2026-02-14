@@ -1,7 +1,7 @@
 import { Vector3 } from "three";
 import type { IMesh } from "../core/mesh/Mesh.types";
 
-const Cube = (): IMesh => {
+export const Cube = (): IMesh => {
   return {
     name: "Cube",
     vertices: [
@@ -24,5 +24,3 @@ const Cube = (): IMesh => {
     ]
   }
 };
-
-export default Cube;

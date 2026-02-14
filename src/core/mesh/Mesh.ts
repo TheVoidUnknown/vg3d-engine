@@ -12,7 +12,7 @@ const DEFAULT: IMesh = {
   faces: []
 }
 
-export default class Mesh implements IMesh {
+export class Mesh implements IMesh {
   public readonly name: MeshType | VgdMeshType;
   public readonly vertices: Vector3[];
   public readonly faces: number[][];

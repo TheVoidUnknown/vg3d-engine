@@ -1,13 +1,13 @@
-import AnimationService, { type IAnimationParameters } from "../../services/AnimationService";
+import { AnimationService, type IAnimationParameters } from "../../services/AnimationService";
 import type { RuntimeHandler } from "../../services/RuntimeService";
-import Animation2DService from "../../services/Animation2DService";
+import { Animation2DService } from "../../services/Animation2DService";
 import type Animation2DComponent from "./Animation2DComponent";
 import type { RawRgb } from "../../services/ColorService";
 
 const _scratchParams2D: IAnimationParameters = {};
 let _scratchColor: RawRgb = [ 1.0, 1.0, 1.0, 1.0 ];
 
-const handleAnimation2DComponent: RuntimeHandler = (
+export const handleAnimation2DComponent: RuntimeHandler = (
   service,
   time,
   component: Animation2DComponent,
@@ -43,5 +43,3 @@ const handleAnimation2DComponent: RuntimeHandler = (
     service.queueMesh(component.mesh, matrix, _scratchColor, _scratchColor);
   }
 };
-
-export default handleAnimation2DComponent;

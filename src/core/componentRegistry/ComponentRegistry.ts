@@ -3,7 +3,7 @@ import { COMPONENTS } from "../../registry/RegisterComponents";
 
 const NAME = "ComponentRegistry";
 
-export default class ComponentRegistry {
+export class ComponentRegistry {
   private static components = new Map<string, ComponentConstructorType>();
 
   public static init() {

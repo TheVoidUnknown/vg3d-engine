@@ -1,8 +1,8 @@
-import RenderTarget from "./RenderTarget";
-import ScreenQuad from "./ScreenQuad";
+import { RenderTarget } from "./RenderTarget";
+import { ScreenQuad } from "./ScreenQuad";
 import type { IPostProcessPass } from "./types";
 
-export default class PostProcessStack {
+export class PostProcessStack {
   private passes: IPostProcessPass[] = [];
   private quad: ScreenQuad;
   

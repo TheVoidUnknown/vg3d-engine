@@ -1,4 +1,4 @@
-export default class Shader {
+export class Shader {
   public program: WebGLProgram;
   private uniforms: Map<string, WebGLUniformLocation> = new Map();
 

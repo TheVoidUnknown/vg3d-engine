@@ -1,7 +1,7 @@
 import { Vector3 } from "three";
 import type { IMesh } from "../core/mesh/Mesh.types";
 
-const Dodecahedron = (): IMesh => {
+export const Dodecahedron = (): IMesh => {
   return {
     name: "Dodecahedron",
     vertices: [
@@ -43,5 +43,3 @@ const Dodecahedron = (): IMesh => {
     ]
   }
 }
-
-export default Dodecahedron;

@@ -1,4 +1,4 @@
-const VgdArrows = [
+export const VgdArrows = [
   {
     name: "Arrow",
     vertices: [
@@ -43,5 +43,3 @@ const VgdArrows = [
     ]
   }
 ] as const;
-
-export default VgdArrows;

@@ -1,20 +1,20 @@
 // gl utils
-import PostProcessStack from "./PostProcessStack";
-import RenderTarget from "./RenderTarget";
-import Geometry from "./Geometry";
-import Shader from "./Shader";
-import Bloom from "./Bloom";
+import { PostProcessStack } from "./PostProcessStack";
+import { RenderTarget } from "./RenderTarget";
+import { Geometry } from "./Geometry";
+import { Shader } from "./Shader";
+import { Bloom } from "./Bloom";
 
 // threejs
 import { Vector3 } from "three";
 
 // types
-import type RenderBatch from "./RenderBatch";
+import type { RenderBatch } from "./RenderBatch";
 import type { ICamera, ILightSource } from "./types";
 import type { RawRgb } from "../services/ColorService";
 
 // utils
-import RuntimeService from "../services/RuntimeService";
+import { RuntimeService } from "../services/RuntimeService";
 
 // shaders
 import VS_SCENE from "../shaders/standard.vert";
@@ -34,7 +34,7 @@ interface RenderCommand {
   transparent: boolean;
 }
 
-export default class Renderer {
+export class Renderer {
   private gl: WebGL2RenderingContext;
   private canvas: HTMLCanvasElement;
   

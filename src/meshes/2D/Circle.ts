@@ -1,4 +1,4 @@
-const VgdCircles = [
+export const VgdCircles = [
   {
     name: "CircleFilled",
     vertices: [
@@ -586,5 +586,3 @@ const VgdCircles = [
     ]
   }
 ] as const;
-
-export default VgdCircles;

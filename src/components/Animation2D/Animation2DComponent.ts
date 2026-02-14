@@ -1,6 +1,7 @@
-import type { VgdMeshType } from "../../meshes";
-import AnimationComponent from "../Animation/AnimationComponent";
+import { AnimationComponent } from "../Animation/AnimationComponent";
+
 import type { IAnimationData } from "../Animation/AnimationComponent";
+import type { VgdMeshType } from "../../meshes";
 
 export interface IAnimation2DData extends IAnimationData {
   type: "Animation2D";
@@ -9,7 +10,7 @@ export interface IAnimation2DData extends IAnimationData {
   origin: { x: number; y: number; }
 }
 
-export default class Animation2DComponent extends AnimationComponent<IAnimation2DData> {
+export class Animation2DComponent extends AnimationComponent<IAnimation2DData> {
   public static readonly TYPE = "Animation2D" as const;
 
   public zOffset = 0;

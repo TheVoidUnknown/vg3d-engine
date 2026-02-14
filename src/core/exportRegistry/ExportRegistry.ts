@@ -1,4 +1,4 @@
-import type Animatable from "../animatable/Animatable";
+import type { Animatable } from "../animatable/Animatable";
 
 import type { ComponentInstanceType } from "../componentRegistry";
 import type { IVgdLevelObject } from "../../vgd/Vgd.types";
@@ -9,7 +9,7 @@ export type ExportHandler = (
   objects: (Animatable | null)[]
 ) => IVgdLevelObject[];
 
-export default class ExportRegistry {
+export class ExportRegistry {
   public static handlers: Map<string, ExportHandler>;
 
   public static init() {
