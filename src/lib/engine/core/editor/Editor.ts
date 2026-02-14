@@ -1,16 +1,22 @@
+// types
+import type { IAnimationParameters } from "../../services/AnimationService";
 import type { IAnimatable } from "../animatable/Animatable.types";
-import type { IEditor } from "./Editor.types";
-import AnimationService, { type IAnimationParameters } from "$lib/engine/services/AnimationService";
-import RuntimeService from "$lib/engine/services/RuntimeService";
-import Animatable from "../animatable/Animatable";
-import Level from "../level/Level";
 import type { ILevel, ITheme } from "../level/Level.types";
-import Renderer from "$lib/engine/gl/Renderer";
+import type { MeshType } from "../../meshes/3D/meshes";
+import type { ICamera } from "../../gl/types";
+import type { IEditor } from "./Editor.types";
+
+// utils
+import AnimationService from "../../services/AnimationService";
+import RuntimeService from "../../services/RuntimeService";
 import MeshRegistry from "../meshRegistry/MeshRegistry";
-import type { MeshType } from "$lib/engine/meshes/3DMeshes";
-import ColorService from "$lib/engine/services/ColorService";
+import ColorService from "../../services/ColorService";
+import Animatable from "../animatable/Animatable";
+import Renderer from "../../gl/Renderer";
+import Level from "../level/Level";
+
+// threejs
 import { Camera, Matrix4, OrthographicCamera, PerspectiveCamera, Vector3 } from "three";
-import type { ICamera } from "$lib/engine/gl/types";
 
 const _eye = new Vector3(0, 0, 100);
 const _target = new Vector3(0, 0, -100);

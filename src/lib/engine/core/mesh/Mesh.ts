@@ -1,9 +1,10 @@
+import { MeshService } from "../../services/MeshService";
+
+import type { RawRgb } from "../../services/ColorService";
+import type { VgdMeshType } from "../../meshes/2D/meshes";
+import type { MeshType } from "../../meshes/3D/meshes";
 import type { Matrix4, Vector3 } from "three";
 import type { IMesh } from "./Mesh.types";
-import { MeshService } from "$lib/engine/services/MeshService";
-import type { MeshType } from "$lib/engine/meshes/3DMeshes";
-import type { RawRgb } from "$lib/engine/services/ColorService";
-import type { VgdMeshType } from "$lib/engine/meshes/2D/VgdMeshes";
 
 const DEFAULT: IMesh = {
   name: "Empty" as MeshType,

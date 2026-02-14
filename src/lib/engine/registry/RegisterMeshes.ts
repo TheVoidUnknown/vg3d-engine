@@ -1,8 +1,8 @@
 import { Vector3 } from "three";
 import type { IMesh } from "../core/mesh/Mesh.types";
-import { VgdShapeMap, type VgdMeshType } from "../meshes/2D/VgdMeshes";
+import { VgdShapeMap, type VgdMeshType } from "../meshes/2D/meshes";
 import MeshRegistry from "../core/meshRegistry/MeshRegistry";
-import Meshes, { type MeshType } from "../meshes/3DMeshes";
+import Meshes, { type MeshType } from "../meshes/3D/meshes";
 
 export default function registerMeshes() {
   MeshRegistry.init();

@@ -2,9 +2,9 @@ import RenderTarget from "./RenderTarget";
 import Shader from "./Shader";
 import ScreenQuad from "./ScreenQuad";
 
-import VS_QUAD from "$lib/shaders/quad.vert.glsl?raw";
-import FS_DOWNSAMPLE from "$lib/shaders/downsample.frag.glsl?raw";
-import FS_UPSAMPLE from "$lib/shaders/upsample.frag.glsl?raw";
+import VS_QUAD from "../shaders/quad.vert.glsl?raw";
+import FS_DOWNSAMPLE from "../shaders/downsample.frag.glsl?raw";
+import FS_UPSAMPLE from "../shaders/upsample.frag.glsl?raw";
 
 export default class Bloom {
   private mips: RenderTarget[] = [];

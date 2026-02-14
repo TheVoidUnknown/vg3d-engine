@@ -1,12 +1,18 @@
-import { VgdAutokillType, type IVgdEvents, type IVgdKeyframe, type IVgdLevel, type IVgdLevelObject, type IVgdPrefab, type IVgdPrefabInstance, type IVgdTheme } from "../vgd/Vgd.types";
-import { type IKeyframe, type KeyframeType } from "../core/keyframe/Keyframe.types";
-import type Animation2DComponent from "../core/component/Animation2DComponent";
-import { generateUUID } from "three/src/math/MathUtils.js";
+// types
+import type Animation2DComponent from "../components/Animation2D/Animation2DComponent";
+import type { IVgdEvents, IVgdKeyframe, IVgdLevel, IVgdLevelObject, IVgdPrefab, IVgdPrefabInstance, IVgdTheme } from "../vgd/Vgd.types";
+import type { IKeyframe, KeyframeType } from "../core/keyframe/Keyframe.types";
 import type { ITheme } from "../core/level/Level.types";
-import { getVgdMeshName } from "../meshes/2D/VgdMeshes";
+import { VgdAutokillType } from "../vgd/Vgd.types";
+
+// utils
+import { generateUUID } from "three/src/math/MathUtils.js";
+import { getVgdMeshName } from "../meshes/2D/meshes";
 import Animatable from "../core/animatable/Animatable";
 import ColorService from "./ColorService";
 import Level from "../core/level/Level";
+
+
 
 interface ConversionStats {
   conversionTime: number;

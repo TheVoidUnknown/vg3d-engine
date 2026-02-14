@@ -1,4 +1,4 @@
-import type { IMesh } from "$lib/engine/core/mesh/Mesh.types";
+import type { IMesh } from "../../core/mesh/Mesh.types";
 import { Vector3 } from "three";
 
 const Icosahedron = (radius: number = 1, subdivisions: number = 0): IMesh => {

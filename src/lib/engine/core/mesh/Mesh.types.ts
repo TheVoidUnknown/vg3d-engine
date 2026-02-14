@@ -1,5 +1,5 @@
-import type { VgdMeshType } from "$lib/engine/meshes/2D/VgdMeshes";
-import type { MeshType } from "$lib/engine/meshes/3DMeshes";
+import type { VgdMeshType } from "../../meshes/2D/meshes";
+import type { MeshType } from "../../meshes/3D/meshes";
 import type { Vector3 } from "three";
 
 export interface IMesh {

@@ -1,8 +1,8 @@
-import AnimationService, { type IAnimationParameters } from "../services/AnimationService";
-import type Animation2DComponent from "../core/component/Animation2DComponent";
-import Animation2DService from "../services/Animation2DService";
-import type { RuntimeHandler } from "../services/RuntimeService";
-import type { RawRgb } from "../services/ColorService";
+import AnimationService, { type IAnimationParameters } from "../../services/AnimationService";
+import type { RuntimeHandler } from "../../services/RuntimeService";
+import Animation2DService from "../../services/Animation2DService";
+import type Animation2DComponent from "./Animation2DComponent";
+import type { RawRgb } from "../../services/ColorService";
 
 const _scratchParams2D: IAnimationParameters = {};
 let _scratchColor: RawRgb = [ 1.0, 1.0, 1.0, 1.0 ];

@@ -1,19 +1,26 @@
-import Geometry from "./Geometry";
+// gl utils
 import PostProcessStack from "./PostProcessStack";
 import RenderTarget from "./RenderTarget";
+import Geometry from "./Geometry";
 import Shader from "./Shader";
 import Bloom from "./Bloom";
 
+// threejs
+import { Vector3 } from "three";
+
+// types
+import type RenderBatch from "./RenderBatch";
 import type { ICamera, ILightSource } from "./types";
 import type { RawRgb } from "../services/ColorService";
 
-import VS_SCENE from "$lib/shaders/standard.vert.glsl?raw";
-import FS_SCENE from "$lib/shaders/standard.frag.glsl?raw";
-import VS_QUAD from "$lib/shaders/quad.vert.glsl?raw";
-import FS_BLIT from "$lib/shaders/blit.frag.glsl?raw";
+// utils
 import RuntimeService from "../services/RuntimeService";
-import { Vector3 } from "three";
-import type RenderBatch from "./RenderBatch";
+
+// shaders
+import VS_SCENE from "../shaders/standard.vert.glsl?raw";
+import FS_SCENE from "../shaders/standard.frag.glsl?raw";
+import VS_QUAD from "../shaders/quad.vert.glsl?raw";
+import FS_BLIT from "../shaders/blit.frag.glsl?raw";
 
 import { INSTANCE_STRIDE, MAX_INSTANCES } from "./RenderBatch";
 const _scratchBuffer = new Float32Array(MAX_INSTANCES * INSTANCE_STRIDE);

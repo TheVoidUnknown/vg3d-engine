@@ -1,10 +1,10 @@
-import KeyframeTrack from "../keyframeTrack/KeyframeTrack";
-import Component from "./Component";
+import KeyframeTrack from "../../core/keyframeTrack/KeyframeTrack";
+import Component from "../../core/component/Component";
 
-import type { IParentSettings } from "$lib/engine/services/AnimationService";
-import type { IKeyframe, KeyframeType } from "../keyframe/Keyframe.types";
-import type { IComponent, IComponentStatic } from "./Component.types";
-import type { MeshType } from "$lib/engine/meshes/3DMeshes";
+import type { IParentSettings } from "../../services/AnimationService";
+import type { IKeyframe, KeyframeType } from "../../core/keyframe/Keyframe.types";
+import type { IComponent, IComponentStatic } from "../../core/component/Component.types";
+import type { MeshType } from "../../meshes/3D/meshes";
 
 type PartialTracks = Partial<Record<KeyframeType, KeyframeTrack>>;
 type PartialTracksSerialized = Partial<Record<KeyframeType, IKeyframe[]>>;

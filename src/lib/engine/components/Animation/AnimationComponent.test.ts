@@ -14,7 +14,7 @@
 
 import { describe, it, expect } from 'vitest';
 import AnimationComponent, { type IAnimationComponent } from './AnimationComponent';
-import KeyframeTrack from '../keyframeTrack/KeyframeTrack';
+import KeyframeTrack from '../../core/keyframeTrack/KeyframeTrack';
 
 /**
  * MOCK DATA

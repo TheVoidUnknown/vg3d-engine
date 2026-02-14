@@ -1,12 +1,19 @@
-import type Animatable from "../core/animatable/Animatable";
-import ExportRegistry from "../core/exportRegistry/ExportRegistry";
-import type Keyframe from "../core/keyframe/Keyframe";
-import { Randomize, type KeyframeType } from "../core/keyframe/Keyframe.types";
+// types
 import type KeyframeTrack from "../core/keyframeTrack/KeyframeTrack";
+import type Animatable from "../core/animatable/Animatable";
+import type Keyframe from "../core/keyframe/Keyframe";
 import type Level from "../core/level/Level";
+import type { IVgdKeyframe, IVgdLevel, IVgdLevelObject, IVgdTheme } from "../vgd/Vgd.types";
+import type { KeyframeType } from "../core/keyframe/Keyframe.types";
 import type { ITheme } from "../core/level/Level.types";
-import { VgdRandomize, type IVgdKeyframe, type IVgdLevel, type IVgdLevelObject, type IVgdTheme } from "../vgd/Vgd.types";
+import { Randomize } from "../core/keyframe/Keyframe.types";
+import { VgdRandomize } from "../vgd/Vgd.types";
+
+// utils
+import ExportRegistry from "../core/exportRegistry/ExportRegistry";
 import ColorService from "./ColorService";
+
+
 
 export default class ExportConverterService {
   public static toVgdLevel(instance: Level): IVgdLevel {

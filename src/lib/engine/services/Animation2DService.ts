@@ -1,14 +1,23 @@
-import type Animation2DComponent from "../core/component/Animation2DComponent";
-import type Animatable from "../core/animatable/Animatable";
-import AnimationService from "./AnimationService";
-import type { IAnimationParameters } from "./AnimationService";
+// component
+import type Animation2DComponent from "../components/Animation2D/Animation2DComponent";
+
+// threejs
 import { Quaternion, Euler, Matrix4, Vector3 } from "three";
 import { degToRad } from "three/src/math/MathUtils.js";
+
+// types
+import type Animatable from "../core/animatable/Animatable";
+import type Level from "../core/level/Level";
+import type { IAnimationParameters } from "./AnimationService";
 import type { ITheme } from "../core/level/Level.types";
 import type { RawRgb } from "./ColorService";
-import ColorService from "./ColorService";
+
+// utils
+import AnimationService from "./AnimationService";
 import Mat4Pool from "../core/mat4Pool/Mat4Pool";
-import type Level from "../core/level/Level";
+import ColorService from "./ColorService";
+
+
 
 const _scratchVec3Pos = new Vector3();
 const _scratchVec3Scale = new Vector3();

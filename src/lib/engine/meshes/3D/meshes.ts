@@ -1,6 +1,6 @@
-import Cube from "./3D/Cube";
-import Dodecahedron from "./3D/Dodecahedron";
-import Icosahedron from "./3D/Icosahedron";
+import Cube from "./Cube";
+import Dodecahedron from "./Dodecahedron";
+import Icosahedron from "./Icosahedron";
 
 const Meshes = {
   Cube,

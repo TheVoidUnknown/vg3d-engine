@@ -1,9 +1,11 @@
-import type Animatable from "../core/animatable/Animatable";
-import type Animation2DComponent from "../core/component/Animation2DComponent";
-import type { ExportHandler } from "../core/exportRegistry/ExportRegistry";
-import { getVgdOffsetsFromName } from "../meshes/2D/VgdMeshes";
-import ExportConverterService from "../services/ExportConverterService";
-import type { IVgdLevelObject } from "../vgd/Vgd.types";
+import ExportConverterService from "../../services/ExportConverterService";
+import { getVgdOffsetsFromName } from "../../meshes/2D/meshes";
+
+import type Animation2DComponent from "./Animation2DComponent";
+import type Animatable from "../../core/animatable/Animatable";
+import type { ExportHandler } from "../../core/exportRegistry/ExportRegistry";
+import type { IVgdLevelObject } from "../../vgd/Vgd.types";
+
 
 const exportAnimation2DComponent: ExportHandler = (
   component: Animation2DComponent,

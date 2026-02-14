@@ -1,7 +1,7 @@
 import type Animatable from "../animatable/Animatable";
 
-import type { IVgdLevelObject } from "$lib/engine/vgd/Vgd.types";
 import type { ComponentType } from "../component/Component.types";
+import type { IVgdLevelObject } from "../../vgd/Vgd.types";
 
 export type ExportHandler = (
   component: ComponentType,

@@ -14,7 +14,7 @@
 
 import { describe, it, expect, vi } from 'vitest';
 import Animation3DComponent, { type IAnimation3DComponent } from './Animation3DComponent';
-import type { MeshType } from '$lib/engine/meshes/3DMeshes';
+import type { MeshType } from '../../meshes/3D/meshes';
 
 /**
  * MOCK DATA

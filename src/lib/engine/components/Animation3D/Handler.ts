@@ -1,7 +1,7 @@
-import AnimationService, { type IAnimationParameters } from "../services/AnimationService";
+import AnimationService, { type IAnimationParameters } from "../../services/AnimationService";
 import type Animation3DComponent from "../core/component/Animation3DComponent";
-import Animation3DService from "../services/Animation3DService";
-import type { RuntimeHandler } from "../services/RuntimeService";
+import Animation3DService from "../../services/Animation3DService";
+import type { RuntimeHandler } from "../../services/RuntimeService";
 
 const _scratchParams3D: IAnimationParameters = {};
 

@@ -11,7 +11,7 @@
   import VgdConverterService from "$lib/engine/services/VgdConverterService";
 	import RuntimeService from "$lib/engine/services/RuntimeService";
   import Editor from "$lib/engine/core/editor/Editor";
-  import initRegistries from "$lib";
+  import { initRegistries } from "$lib/engine";
 	import type { ITheme } from "$lib/engine/core/level/Level.types";
 	import type { IVgdLevel } from "$lib/engine/vgd/Vgd.types";
 

@@ -1,4 +1,4 @@
-import AnimationComponent, { type IAnimationComponent } from "./AnimationComponent";
+import AnimationComponent, { type IAnimationComponent } from "../Animation/AnimationComponent";
 import type { IKeyframe, KeyframeType } from "../keyframe/Keyframe.types";
 
 type PartialTracksSerialized = Partial<Record<KeyframeType, IKeyframe[]>>;

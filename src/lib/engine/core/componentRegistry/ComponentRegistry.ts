@@ -1,5 +1,5 @@
-import type { ComponentNameType } from "$lib/engine/registry/RegisterComponents";
 import type { IComponent, IComponentStatic } from "../component/Component.types";
+import type { ComponentNameType } from "../../registry/RegisterComponents";
 import type { IComponentConstructor } from "./ComponentRegistry.types";
 
 export default class ComponentRegistry {

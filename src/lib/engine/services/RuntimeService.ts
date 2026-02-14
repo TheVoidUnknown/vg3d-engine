@@ -1,11 +1,11 @@
-import type Animatable from "../core/animatable/Animatable";
 import RenderBatch from "../gl/RenderBatch";
 
+import type Animatable from "../core/animatable/Animatable";
+import type Level from "../core/level/Level";
 import type { ComponentType } from "../core/component/Component.types";
 import type { ITheme } from "../core/level/Level.types";
 import type { RawRgb } from "./ColorService";
 import type { Matrix4 } from "three";
-import type Level from "../core/level/Level";
 
 export type RuntimeHandler = (
   service: typeof RuntimeService,

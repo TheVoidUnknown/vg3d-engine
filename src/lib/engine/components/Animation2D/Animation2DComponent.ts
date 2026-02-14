@@ -1,7 +1,7 @@
-import AnimationComponent, { type IAnimationComponent } from "./AnimationComponent";
+import AnimationComponent, { type IAnimationComponent } from "../Animation/AnimationComponent";
 
-import type { IKeyframe, KeyframeType } from "../keyframe/Keyframe.types";
-import type { VgdMeshType } from "$lib/engine/meshes/2D/VgdMeshes";
+import type { IKeyframe, KeyframeType } from "../../core/keyframe/Keyframe.types";
+import type { VgdMeshType } from "../../meshes/2D/meshes";
 
 type PartialTracksSerialized = Partial<Record<KeyframeType, IKeyframe[]>>;
 

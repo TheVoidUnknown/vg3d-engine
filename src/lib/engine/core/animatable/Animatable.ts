@@ -1,8 +1,9 @@
+import ComponentRegistry from "../componentRegistry/ComponentRegistry";
 import { generateUUID } from "three/src/math/MathUtils.js";
+
 import type { ComponentType, IComponentType } from "../component/Component.types";
+import type { ComponentNameType } from "../../registry/RegisterComponents";
 import type { IAnimatable } from "./Animatable.types";
-import ComponentRegistry from "$lib/engine/core/componentRegistry/ComponentRegistry";
-import type { ComponentNameType } from "$lib/engine/registry/RegisterComponents";
 
 export default class Animatable {
   public id: string;

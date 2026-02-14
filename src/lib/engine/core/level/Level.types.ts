@@ -1,5 +1,5 @@
-import type { Rgba } from "$lib/engine/services/ColorService";
 import type { IAnimatable } from "../animatable/Animatable.types";
+import type { Rgba } from "../../services/ColorService";
 
 export interface ILevelMetadata {
   id: string;

@@ -1,10 +1,14 @@
-import type { ComponentType } from "../core/component/Component.types";
-import { getEasing } from "../core/easing/Easing.const";
+// types
+import type KeyframeTrack from "../core/keyframeTrack/KeyframeTrack";
 import type Keyframe from "../core/keyframe/Keyframe";
 import { Randomize, type KeyframeType } from "../core/keyframe/Keyframe.types";
-import type KeyframeTrack from "../core/keyframeTrack/KeyframeTrack";
+import type { ComponentType } from "../core/component/Component.types";
 import type { ITheme } from "../core/level/Level.types";
-import ColorService, { type RawRgb } from "./ColorService";
+import type { RawRgb } from "./ColorService";
+
+// utils
+import { getEasing } from "../core/easing/Easing.const";
+import ColorService from "./ColorService";
 
 export type IParentSettings = {
   [K in KeyframeType]?: {
