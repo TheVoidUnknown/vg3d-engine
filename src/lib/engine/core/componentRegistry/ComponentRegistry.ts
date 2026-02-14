@@ -1,40 +1,40 @@
-import type { IComponent, IComponentStatic } from "../component/Component.types";
-import type { ComponentNameType } from "../../registry/RegisterComponents";
-import type { IComponentConstructor } from "./ComponentRegistry.types";
+import type { ComponentNameType, ComponentConstructorType, ComponentDataType, GetConstructor, GetInstance } from "./ComponentRegistry.types";
+import { COMPONENTS } from "../../registry/RegisterComponents";
+
+const NAME = "ComponentRegistry";
 
 export default class ComponentRegistry {
-  private static components: Map<string, IComponentConstructor<any, any>> = new Map();
+  private static components = new Map<string, ComponentConstructorType>();
 
   public static init() {
-    this.components = new Map();
+    this.components.clear();
 
-    console.info("Component Registry initialized");
-  }
-
-  public static register<T extends IComponent<T, D>, D extends IComponentStatic>(
-    name: ComponentNameType, 
-    def: IComponentConstructor<T, D>
-  ) {
-    if (this.components.has(name)) {
-      console.warn(`[ComponentRegistry] Component with name "${name}" was already registered, the previous entry will be overwritten!`);
-      this.components.delete(name);
+    for (const C of COMPONENTS) {
+      this.register(C.TYPE, C);
     }
 
-    this.components.set(name, def);
-    console.info(`[ComponentRegistry] Registered component "${name}" -> ${def.name}`);
+    console.info(`[${NAME}] Registered ${this.components.size} components.`);
   }
 
-  public static get<T extends IComponent<T, D>, D extends IComponentStatic>(
-    name: ComponentNameType
-  ): IComponentConstructor<T, D> | undefined {
-    return this.components.get(name) as IComponentConstructor<T, D> | undefined;
+  public static register(name: string, constructor: ComponentConstructorType) {
+    if (this.components.has(name)) {
+      console.warn(`[${NAME}] Overwriting component "${name}"`);
+    }
+    this.components.set(name, constructor);
   }
 
-  public static create<D extends IComponentStatic>(data: D): any {
-    const ComponentClass = this.components.get(data.type);
+  public static get<T extends ComponentNameType>(name: T): GetConstructor<T> {
+    const Constructor = this.components.get(name);
+    if (!Constructor) {
+      throw new Error(`[${NAME}] Component "${name}" not registered.`);
+    }
 
-    if (!ComponentClass) { throw new Error(`[ComponentRegistry] Component type "${data.type}" is not registered.`); }
+    return Constructor as GetConstructor<T>;
+  }
 
-    return ComponentClass.from(data);
+  public static create<D extends ComponentDataType>(data: D): GetInstance<D['type']> {
+    const ClassRef = this.get(data.type as ComponentNameType);
+
+    return ClassRef.from(data as any) as GetInstance<D['type']>;
   }
 }

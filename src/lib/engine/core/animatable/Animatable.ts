@@ -1,14 +1,13 @@
 import ComponentRegistry from "../componentRegistry/ComponentRegistry";
 import { generateUUID } from "three/src/math/MathUtils.js";
 
-import type { ComponentType, IComponentType } from "../component/Component.types";
-import type { ComponentNameType } from "../../registry/RegisterComponents";
+import type { ComponentDataType, ComponentInstanceType, ComponentNameType } from "../componentRegistry";
 import type { IAnimatable } from "./Animatable.types";
 
 export default class Animatable {
   public id: string;
   public name: string;
-  public components: ComponentType[];
+  public components: ComponentInstanceType[];
 
   constructor(
     initial?: Partial<IAnimatable>
@@ -25,7 +24,7 @@ export default class Animatable {
   }
 
   public serialize(): IAnimatable {
-    const components: IComponentType[] = [];
+    const components: ComponentDataType[] = [];
 
     this.components.forEach((c) => {
       components.push(c.serialize())
@@ -53,7 +52,7 @@ export default class Animatable {
 
   public _setDirty() { this.components.forEach((o) => o._isDirty = true ); }
 
-  public addComponent(type: ComponentNameType): ComponentType {
+  public addComponent(type: ComponentNameType): ComponentInstanceType {
     const component = ComponentRegistry.create({ type });
     this.components.push(component);
     return component;
@@ -67,7 +66,7 @@ export default class Animatable {
     return this;
   }
 
-  public getComponent<T extends ComponentNameType>(type: T): ComponentType {
+  public getComponent<T extends ComponentNameType>(type: T): ComponentInstanceType {
     for (const component of this.components) {
       if (component.type() === type) { return component; }
     }

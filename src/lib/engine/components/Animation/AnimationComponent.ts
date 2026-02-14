@@ -1,146 +1,142 @@
 import KeyframeTrack from "../../core/keyframeTrack/KeyframeTrack";
 import Component from "../../core/component/Component";
 
-import type { IParentSettings } from "../../services/AnimationService";
 import type { IKeyframe, KeyframeType } from "../../core/keyframe/Keyframe.types";
-import type { IComponent, IComponentStatic } from "../../core/component/Component.types";
+import type { IComponentData } from "../../core/component/Component.types";
+import type { IParentSettings } from "../../services/AnimationService";
 import type { MeshType } from "../../meshes/3D/meshes";
+import type { VgdMeshType } from "$lib/engine/meshes";
 
-type PartialTracks = Partial<Record<KeyframeType, KeyframeTrack>>;
-type PartialTracksSerialized = Partial<Record<KeyframeType, IKeyframe[]>>;
-
-export interface IAnimationComponent extends IComponentStatic {
+export interface IAnimationData<M = MeshType | VgdMeshType> extends IComponentData {
   parentId?: string;
-  tracks: PartialTracksSerialized;
+  tracks?: Partial<Record<KeyframeType, IKeyframe[]>>;
   spawnTime: number;
   lifetime: number;
-  mesh?: MeshType;
-  parentSettings: IParentSettings;
+  mesh?: M;
+  parentSettings?: IParentSettings;
 }
 
 // Methods and properties shared between 2D and 3D
-export default class AnimationComponent extends Component implements IComponent<AnimationComponent, IAnimationComponent> {
-  public static readonly TYPE = "Animation" as const;
+export default abstract class AnimationComponent<D extends IAnimationData> extends Component<D> {
+  public parentId?: string;
+  public tracks: Partial<Record<KeyframeType, KeyframeTrack>> = {}; 
+  public spawnTime: number = 1;
+  public lifetime: number = 30;
+  public mesh?: D['mesh'];
+  public parentSettings: IParentSettings = {};
+  public randomSeed: number = 0;
 
   public _parentIndex?: number;
 
-  public parentId?: string;
-  public tracks!: PartialTracks;
-  public spawnTime!: number;
-  public lifetime!: number;
-  public mesh?: MeshType;
-  public parentSettings!: IParentSettings;
-  public randomSeed!: number;
-
-  constructor(
-    initial?: Partial<IAnimationComponent>
-  ) {
-    super();
-    this.init();
-
-    if (initial) { this.assign(initial); }
-  };
-
-  public static from(data: IAnimationComponent): AnimationComponent {
-    return new AnimationComponent(data);
-  }
-
-  public static type() { return this.TYPE; }
-  public type() { return AnimationComponent.type(); }
+  constructor() { super(); }
 
   public init() {
     this._isDirty = true;
-
     this.tracks = {};
-    this.spawnTime = 0;
-    this.lifetime = 30;
+    this.spawnTime = 1;
+    this.lifetime = 5;
     this.parentSettings = {};
     this.refreshRandomSeed();
   }
 
-  public update() {
-    return;
-  }
+  public update() { return; }
 
-  public serialize(): IAnimationComponent {
-    const tracks: PartialTracksSerialized = {};
+  protected serializeShared(): IAnimationData<D['mesh']> {
+    const serializedTracks: Partial<Record<KeyframeType, IKeyframe[]>> = {};
+    
     for (const k in this.tracks) {
       const key = k as KeyframeType;
-      tracks[key] = this.tracks[key]?.serialize();
+      serializedTracks[key] = this.tracks[key]?.serialize();
     }
 
     return {
       type: this.type(),
       parentId: this.parentId,
       mesh: this.mesh,
-      tracks,
+      tracks: serializedTracks,
       spawnTime: this.spawnTime,
       lifetime: this.lifetime,
-      parentSettings: structuredClone(this.parentSettings)
+      parentSettings: structuredClone(this.parentSettings),
     };
   }
 
-  public assign(data: Partial<IAnimationComponent>): this {
-    if (data.parentId) { this.parentId = data.parentId; }
-    if (data.mesh) { this.mesh = data.mesh; }
+  public assign(data: Partial<D>): this {
+    if (data.parentId !== undefined) { this.parentId = data.parentId; }
+    if (data.mesh !== undefined) { this.mesh = data.mesh; }
+    if (data.spawnTime !== undefined) { this.spawnTime = data.spawnTime; }
+    if (data.lifetime !== undefined) { this.lifetime = data.lifetime; }
+    if (data.parentSettings) { this.parentSettings = structuredClone(data.parentSettings); }
 
-    if (data.tracks !== undefined) {
+    if (data.tracks) {
       for (const k in data.tracks) {
         const key = k as KeyframeType;
         this.createTrack(key, data.tracks[key]);
       }
     }
 
-    if (data.spawnTime !== undefined) { this.spawnTime = data.spawnTime; }
-    if (data.lifetime !== undefined) { this.lifetime = data.lifetime; }
-    if (data.parentSettings) { this.parentSettings = structuredClone(data.parentSettings); }
-
     return this;
   }
 
-  public createTrack<T extends KeyframeType>(type: T, data?: IKeyframe[]): this {
+  public createTrack(
+    type: KeyframeType,
+    data?: IKeyframe[]
+  ): this {
     this.tracks[type] = KeyframeTrack.from(data ?? []);
     return this;
   }
 
-  public deleteTrack<T extends KeyframeType>(type: T): this {
+  public deleteTrack(
+    type: KeyframeType
+  ): this {
     delete this.tracks[type];
     return this;
   }
 
-  public addKeyframe<T extends KeyframeType>(type: T, data?: Partial<IKeyframe>): this {
+  public addKeyframe(
+    type: KeyframeType,
+    data: Partial<IKeyframe>
+  ): this {
     if (!this.tracks[type]) { this.createTrack(type); }
-    if (this.tracks[type] && data) {
-      this.tracks[type].addKeyframe(data);
-    }
+    this.tracks[type]?.addKeyframe(data);
     return this;
   }
 
-  public setMesh(mesh: MeshType): this {
+  public setMesh(
+    mesh: MeshType
+  ): this {
     this.mesh = mesh;
     return this;
   }
 
-  public setParent(parentId: string, parentIndex: number): this {
+  public setParent(
+    parentId: string,
+    parentIndex: number
+  ): this {
     this.parentId = parentId;
     this._parentIndex = parentIndex;
     return this;
   }
 
-  public setParenting(type: KeyframeType, enabled: boolean): this {
+  public setParenting(
+    type: KeyframeType,
+    enabled: boolean
+  ): this {
     if (!this.parentSettings[type]) {
       this.parentSettings[type] = { enabled, offset: 0 };
     } else {
-      this.parentSettings[type].enabled = enabled;
+      this.parentSettings[type]!.enabled = enabled;
     }
     return this;
   }
 
-  public setParentOffset(type: KeyframeType, offset: number): this {
+  public setParentOffset(
+    type: KeyframeType,
+    offset: number
+  ): this {
     if (!this.parentSettings[type]) {
       this.parentSettings[type] = { enabled: true, offset };
     } else {
-      this.parentSettings[type].offset = offset;
+      this.parentSettings[type]!.offset = offset;
     }
     return this;
   }

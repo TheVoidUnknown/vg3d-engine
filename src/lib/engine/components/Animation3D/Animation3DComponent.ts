@@ -1,86 +1,61 @@
-import AnimationComponent, { type IAnimationComponent } from "../Animation/AnimationComponent";
-import type { IKeyframe, KeyframeType } from "../keyframe/Keyframe.types";
+import type { MeshType } from "$lib/engine/meshes";
+import AnimationComponent from "../Animation/AnimationComponent";
+import type { IAnimationData } from "../Animation/AnimationComponent";
 
-type PartialTracksSerialized = Partial<Record<KeyframeType, IKeyframe[]>>;
-
-export interface IAnimation3DComponent extends IAnimationComponent {
-  origin: {
-    x: number;
-    y: number;
-    z: number;
-  }
+export interface IAnimation3DData extends IAnimationData {
+  type: "Animation3D";
+  mesh?: MeshType;
+  origin: { x: number; y: number; z: number };
 }
 
-export default class Animation3DComponent extends AnimationComponent {
+export default class Animation3DComponent extends AnimationComponent<IAnimation3DData> {
   public static readonly TYPE = "Animation3D" as const;
 
-  public origin!: { x: number, y: number, z: number }
+  public origin = { x: 0, y: 0, z: 0 };
 
-  constructor(
-    initial?: Partial<IAnimation3DComponent>
-  ) {
+  constructor(initial?: Partial<IAnimation3DData>) {
     super();
     this.init();
 
     if (initial) { this.assign(initial); }
-  };
-
-  public static from(data: IAnimation3DComponent): Animation3DComponent {
-    return new Animation3DComponent(data);
   }
 
   public static type() { return this.TYPE; }
-  public type() { return Animation3DComponent.type(); }
+  public type() { return Animation3DComponent.TYPE; }
 
   public init() {
     this._isDirty = true;
-
     this.tracks = {};
-    this.spawnTime = 0;
-    this.lifetime = 30;
-    this.mesh = "Cube";
-    this.origin = { x: 0, y: 0, z: 0 };
+    this.spawnTime = 1;
+    this.lifetime = 5;
     this.parentSettings = {};
+    this.origin = structuredClone({ x: 0, y: 0, z: 0 });
+    this.refreshRandomSeed();
   }
 
-  public update() {
-    return;
+  public static from(data: IAnimation3DData): Animation3DComponent {
+    return new Animation3DComponent(data);
   }
 
-  public serialize(): IAnimation3DComponent {
-    const tracks: PartialTracksSerialized = {};
-    for (const k in this.tracks) {
-      const key = k as KeyframeType;
-      tracks[key] = this.tracks[key]?.serialize();
-    }
+  public serialize(): IAnimation3DData {
+    // Serialize data shared between all animation types
+    const base = this.serializeShared(); 
 
+    // Tack on the 3D-specific data
     return {
-      type: this.type(),
-      parentId: this.parentId,
-      mesh: this.mesh,
-      tracks,
-      spawnTime: this.spawnTime,
-      lifetime: this.lifetime,
+      ...base,
+      type: Animation3DComponent.TYPE,
       origin: structuredClone(this.origin),
-      parentSettings: structuredClone(this.parentSettings)
     };
   }
 
-  public assign(data: Partial<IAnimation3DComponent>): this {
-    if (data.parentId) { this.parentId = data.parentId; }
-    if (data.mesh) { this.mesh = data.mesh; }
+  public override assign(data: Partial<IAnimation3DData>): this {
+    // Let the base class handle most of the work
+    super.assign(data); 
 
-    if (data.tracks !== undefined) {
-      for (const k in data.tracks) {
-        const key = k as KeyframeType;
-        this.createTrack(key, data.tracks[key]);
-      }
+    if (data.origin) { 
+      this.origin = structuredClone(data.origin); 
     }
-
-    if (data.spawnTime) { this.spawnTime = data.spawnTime; }
-    if (data.lifetime) { this.lifetime = data.lifetime; }
-    if (data.origin) { this.origin = structuredClone(data.origin); }
-    if (data.parentSettings) { this.parentSettings = structuredClone(data.parentSettings); }
 
     return this;
   }

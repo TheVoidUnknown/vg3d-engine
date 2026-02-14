@@ -16,7 +16,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { Vector3, Matrix4 } from 'three';
 import { MeshService } from '$lib/engine/services/MeshService';
 import type { IMesh } from './Mesh.types';
-import type { MeshType } from '$lib/engine/meshes/3DMeshes';
+import type { MeshType } from '../../meshes/3D/meshes';
 import Mesh from './Mesh';
 
 /**

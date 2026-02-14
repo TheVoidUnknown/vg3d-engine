@@ -13,7 +13,7 @@
 */
 
 import { describe, it, expect, vi } from 'vitest';
-import Animation3DComponent, { type IAnimation3DComponent } from './Animation3DComponent';
+import Animation3DComponent, { type IAnimation3DData } from './Animation3DComponent';
 import type { MeshType } from '../../meshes/3D/meshes';
 
 /**
@@ -22,7 +22,7 @@ import type { MeshType } from '../../meshes/3D/meshes';
 const MOCK_ORIGIN = { x: 10, y: 20, z: 30 };
 const MOCK_PARENT_SETTINGS = { Move: { enabled: true, offset: 0.1 } };
 
-const MOCK_DATA: IAnimation3DComponent = {
+const MOCK_DATA: IAnimation3DData = {
   type: 'Animation3D',
   parentId: 'parent-123',
   mesh: 'Cube',
@@ -55,9 +55,9 @@ describe('Animation3DComponent', () => {
     it('should fallback to safe defaults', () => {
       const component = new Animation3DComponent();
       expect(component.origin).toEqual({ x: 0, y: 0, z: 0 });
-      expect(component.mesh).toBe('Cube');
-      expect(component.lifetime).toBe(30);
-      expect(component.spawnTime).toBe(0);
+      expect(component.mesh).toEqual(undefined);
+      expect(component.lifetime).toBe(5);
+      expect(component.spawnTime).toBe(1);
     });
 
     it('should not pollute defaults', () => {
@@ -155,7 +155,7 @@ describe('Animation3DComponent', () => {
       component.init();
       expect(component.origin).toEqual({ x: 0, y: 0, z: 0 });
       expect(component.mesh).toBe('Cube');
-      expect(component.spawnTime).toBe(0);
+      expect(component.spawnTime).toBe(1);
     });
 
     it('should do nothing with update()', () => {

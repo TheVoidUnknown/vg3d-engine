@@ -8,11 +8,6 @@ export const COMPONENTS = [
   Animation2DComponent
 ] as const;
 
-export type ComponentNameType = (typeof COMPONENTS)[number]['TYPE'];
-
 export default function registerComponents() {
   ComponentRegistry.init();
-  for (const entry of COMPONENTS) {
-    ComponentRegistry.register(entry.TYPE, entry);
-  }
 }

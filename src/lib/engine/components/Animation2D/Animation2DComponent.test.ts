@@ -13,7 +13,7 @@
 */
 
 import { describe, it, expect } from 'vitest';
-import Animation2DComponent, { type IAnimation2DComponent } from './Animation2DComponent';
+import Animation2DComponent, { type IAnimation2DData } from './Animation2DComponent';
 
 /**
  * MOCK DATA
@@ -21,7 +21,7 @@ import Animation2DComponent, { type IAnimation2DComponent } from './Animation2DC
 const MOCK_ORIGIN = { x: 10, y: 20, z: 30 };
 const MOCK_PARENT_SETTINGS = { Move: { enabled: true, offset: 0.1 } };
 
-const MOCK_DATA: IAnimation2DComponent = {
+const MOCK_DATA: IAnimation2DData = {
   type: 'Animation2D',
   parentId: 'parent-123',
   mesh: 'SquareFilled',
@@ -87,8 +87,8 @@ describe('Animation2DComponent', () => {
     });
 
     it('should handle incomplete data', () => {
-      const partialData: Partial<IAnimation2DComponent> = { zOffset: 5 };
-      const instance = Animation2DComponent.from(partialData as IAnimation2DComponent);
+      const partialData: Partial<IAnimation2DData> = { zOffset: 5 };
+      const instance = Animation2DComponent.from(partialData as IAnimation2DData);
       expect(instance.zOffset).toBe(5);
       expect(instance.origin).toEqual({ x: 0, y: 0 }); // Default from init()
     });

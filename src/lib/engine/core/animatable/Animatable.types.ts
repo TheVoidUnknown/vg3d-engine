@@ -1,7 +1,7 @@
-import type { IComponentType } from "../component/Component.types";
+import type { ComponentDataType } from "../componentRegistry";
 
 export interface IAnimatable {
   id: string;
   name: string;
-  components: IComponentType[];
+  components: ComponentDataType[];
 }
