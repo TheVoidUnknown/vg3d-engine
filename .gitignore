@@ -3,15 +3,11 @@ package-lock.json
 .vscode
 
 # Test data
-src/lib/*.vgd
+*/*.vgd
+src/dev.ts
 
 # Output
-.output
-.vercel
-.netlify
-.wrangler
-/.svelte-kit
-/build
+/dist
 
 # OS
 .DS_Store
@@ -22,7 +18,3 @@ Thumbs.db
 .env.*
 !.env.example
 !.env.test
-
-# Vite
-vite.config.js.timestamp-*
-vite.config.ts.timestamp-*
