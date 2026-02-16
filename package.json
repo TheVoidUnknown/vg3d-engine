@@ -13,12 +13,11 @@
   "files": [
     "dist"
   ],
-	"scripts": {
+  "scripts": {
     "dev": "tsup src/dev.ts --watch --onSuccess \"node dist/dev.js\"",
-		"build": "tsup",
-		"test": "vitest",
+    "build": "tsup src/index.ts --format esm --dts --clean",
     "prepare": "npm run build"
-	},
+  },
 	"devDependencies": {
 		"@types/culori": "^4.0.1",
 		"@types/earcut": "^3.0.0",
