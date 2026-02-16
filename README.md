@@ -1,4 +1,9 @@
 ## Quickstart
+**If you just want to use the level viewer, you can do so here:**
+https://thevoidunknown.github.io/vg3d-engine
+
+**Instructions for running locally:**
+
 1. `git clone https://github.com/TheVoidUnknown/vg3d-engine`
 2. `cd vg3d-engine`
 3. `npm install`
